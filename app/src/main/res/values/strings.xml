@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Double UEyeD</string>
+    <string name="textview_label">이름을 입력해주세요</string>
+    <string name="button">확인</string>
+    <string name="left_guide_eye">왼쪽 가이드 눈</string>
+    <string name="right_guide_eye">오른쪽 가이드 눈</string>
+    <string name="unstable_state_text">가운데 초록색 눈 이미지에 눈을 맞추어 주세요</string>
+    <string name="steady_state_text">눈 위치를 유지해주세요</string>
+    <string name="develop_mode">개발자 모드</string>
+    <string name="setting_mode">설정</string>
+    <string name="verification">인식</string>
+    <string name="enroll">등록</string>
+    <string name="label_result">label</string>
+    <string name="result_text">반갑습니다</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="state_text_check_overlay">가운데 초록색 눈 이미지에 눈을 맞추어 주세요</string>
+    <string name="state_text_check_acel">공을 가운데에 맞추어 주세요</string>
+    <string name="state_text_nothing">촬영한 데이터 수 : </string>
+    <string name="verification_size_text">인식 촬영 데이터 수 : </string>
+    <string name="enroll_size_text">등록 촬영 데이터 수 : </string>
+    <string name="setting_btn">설정</string>
+    <string name="not_number_format">숫자 형식이 아닙니다.</string>
+    <string name="sir_text">님</string>
+    <string name="ball_background_image_des">ball_background</string>
+    <string name="ball_background_grid_image_des">ball_background_grid</string>
+</resources>
