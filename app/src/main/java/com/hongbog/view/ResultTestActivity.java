@@ -2,7 +2,6 @@ package com.hongbog.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,22 +9,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tzutalin.dlibtest.CameraActivity;
-import com.tzutalin.dlibtest.MainActivity;
-import com.tzutalin.dlibtest.ParcelBitmap;
-import com.tzutalin.dlibtest.ParcelBitmapList;
-import com.tzutalin.dlibtest.R;
-import com.tzutalin.dlibtest.ResultProb;
-import com.tzutalin.dlibtest.ResultProbList;
-import com.tzutalin.dlibtest.TensorFlowClassifier;
+import com.tzutalin.quality.R;
+import com.hongbog.dto.ResultProb;
+import com.hongbog.dto.ResultProbList;
+import com.hongbog.tensorflow.TensorFlowClassifier;
 
-import java.util.ArrayList;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import static com.tzutalin.dlibtest.TensorFlowClassifier.HEIGHTS;
-import static com.tzutalin.dlibtest.TensorFlowClassifier.MULTISCALE_CNT;
-import static com.tzutalin.dlibtest.TensorFlowClassifier.WIDTHS;
+import static com.hongbog.tensorflow.TensorFlowClassifier.HEIGHTS;
+import static com.hongbog.tensorflow.TensorFlowClassifier.MULTISCALE_CNT;
+import static com.hongbog.tensorflow.TensorFlowClassifier.WIDTHS;
 
 /**
  * Created by taein on 2018-07-26.

@@ -1,23 +1,13 @@
 package com.hongbog.view;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.os.Handler;
-import android.util.Size;
-import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 
-import com.tzutalin.dlibtest.CameraConnectionFragment;
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.OnGetImageListener;
-import com.tzutalin.dlibtest.R;
+import com.hongbog.util.Dlog;
+import com.tzutalin.quality.R;
 
 /**
  * Created by darts on 2017-10-07.

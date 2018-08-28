@@ -1,6 +1,5 @@
 package com.hongbog.view;
 
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,11 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.R;
+import com.hongbog.util.Dlog;
+import com.tzutalin.quality.R;
 
-import static com.tzutalin.dlibtest.CameraConnectionFragment.ENROLL_INPUT_DATA_SIZE;
-import static com.tzutalin.dlibtest.CameraConnectionFragment.VERIFY_INPUT_DATA_SIZE;
+import static com.hongbog.view.CameraConnectionFragment.ENROLL_INPUT_DATA_SIZE;
+import static com.hongbog.view.CameraConnectionFragment.VERIFY_INPUT_DATA_SIZE;
 
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {

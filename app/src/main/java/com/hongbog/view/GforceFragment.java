@@ -12,9 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.R;
-import com.tzutalin.dlibtest.SensorListener;
+import com.hongbog.util.Dlog;
+import com.tzutalin.quality.R;
 
 /**
  * Created by taein on 2018-07-16.

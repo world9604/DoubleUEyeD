@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.hongbog.viewmodel.InfoViewModel"/>
+            type="com.hongbog.view.InfoViewModel"/>
     </data>
 
     <LinearLayout

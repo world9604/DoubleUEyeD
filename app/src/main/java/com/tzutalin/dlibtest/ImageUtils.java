@@ -19,11 +19,9 @@ package com.tzutalin.dlibtest;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.annotation.Keep;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;

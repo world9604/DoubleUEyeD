@@ -12,11 +12,9 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.hongbog.viewmodel.Ball;
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.R;
-import com.tzutalin.dlibtest.SensorDTO;
-import com.tzutalin.dlibtest.SensorListener;
+import com.hongbog.dto.SensorDTO;
+import com.hongbog.util.Dlog;
+import com.tzutalin.quality.R;
 
 /**
  * Created by taein on 2018-07-12.
@@ -74,6 +72,7 @@ public class BallSurFaceView extends SurfaceView implements SurfaceHolder.Callba
         }
     }
 
+
     private class DrawThread extends Thread{
         private boolean bExit;
         private int dspWidth, dspHeight;
@@ -129,6 +128,7 @@ public class BallSurFaceView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
     }
+
 
     public class SensorChangeHandler extends Handler {
 

@@ -1,27 +1,6 @@
 package com.hongbog.view;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.Image;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.ImageUtils;
-import com.tzutalin.dlibtest.R;
-import com.tzutalin.dlibtest.ResultProb;
-import com.tzutalin.dlibtest.ResultProbList;
-import com.tzutalin.dlibtest.TensorFlowClassifier;
-import com.tzutalin.dlibtest.TensorFlowSimilarityClassifier;
-import com.victor.loading.rotate.RotateLoading;
-
-import static com.tzutalin.dlibtest.TensorFlowClassifier.HEIGHTS;
-import static com.tzutalin.dlibtest.TensorFlowClassifier.WIDTHS;
 
 public class ResultSimilarityActivity extends AppCompatActivity {
 /*

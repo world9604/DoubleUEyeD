@@ -3,8 +3,9 @@ include $(CLEAR_VARS)
 
 #opencv library
 OPENCVROOT:= C:\OpenCV-android-sdk
-OPENCVROOT:= D:\hongbog\project\OpenCV-android-sdk
 OPENCVROOT:= C:\develop\OpenCV-android-sdk
+OPENCVROOT:= D:\hongbog\project\OpenCV-android-sdk
+
 
 
 OPENCV_CAMERA_MODULES:=on

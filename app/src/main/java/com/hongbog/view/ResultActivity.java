@@ -1,39 +1,37 @@
 package com.hongbog.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.MainActivity;
-import com.tzutalin.dlibtest.ParcelBitmap;
-import com.tzutalin.dlibtest.R;
-import com.tzutalin.dlibtest.ResultProb;
-import com.tzutalin.dlibtest.ResultProbList;
-import com.tzutalin.dlibtest.TensorFlowClassifier;
-import com.tzutalin.dlibtest.TensorFlowSimilarityClassifier;
+import com.hongbog.util.Dlog;
+import com.tzutalin.quality.R;
+import com.hongbog.dto.ResultProb;
+import com.hongbog.dto.ResultProbList;
+import com.hongbog.tensorflow.TensorFlowClassifier;
 import com.victor.loading.rotate.RotateLoading;
 
-import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-import static com.tzutalin.dlibtest.TensorFlowClassifier.HEIGHTS;
-import static com.tzutalin.dlibtest.TensorFlowClassifier.WIDTHS;
+import static com.hongbog.tensorflow.TensorFlowClassifier.HEIGHTS;
+import static com.hongbog.tensorflow.TensorFlowClassifier.WIDTHS;
+import static com.hongbog.view.MainActivity.ACTIVITY_FLOW_EXTRA;
+import static com.hongbog.view.MainActivity.ENROLL_EXTRA;
+import static com.hongbog.view.MainActivity.VERIFY_EXTRA;
 
 public class ResultActivity extends AppCompatActivity {
 
     private TextView mTextView;
-    private ImageView mLeftImageView;
-    private ImageView mRightImageView;
     private TensorFlowClassifier classifier;
     private RelativeLayout loadingLayout;
     private RotateLoading rotateLoading;
+    private static final int GARBAGE_VALUE = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,36 @@ public class ResultActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        new ClassficationAsyncTask().execute(bundle);
+        ResultProbList resultProbList = null;
+
+        try {
+            resultProbList = new ClassficationAsyncTask().execute(bundle).get();
+        } catch (Exception e) {
+            Dlog.e("Exception Message : " + e.getMessage());
+            finish();
+        }
+
+        int label = getLabelFromLogit(resultProbList);
+        String mode = intent.getStringExtra(ACTIVITY_FLOW_EXTRA);
+
+        if (mode != null && !"".equals(mode)) {
+            if(mode != null && VERIFY_EXTRA.equals(mode)){
+
+                Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
+                mTextView.setText(label);
+
+            }else if(mode != null && ENROLL_EXTRA.equals(mode)){
+
+                Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
+
+                SharedPreferences sharedPreferences = getSharedPreferences("LABEL", this.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("enrolledLabel", label);
+
+            }else{
+
+            }
+        }
     }
 
 
@@ -82,7 +109,6 @@ public class ResultActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ResultProbList resultProbs) {
-            setResult(resultProbs);
             stopLoadingAnimation();
         }
     }
@@ -90,8 +116,6 @@ public class ResultActivity extends AppCompatActivity {
 
     private void initView(){
         mTextView = (TextView)findViewById(R.id.label_textview);
-        mLeftImageView = (ImageView)findViewById(R.id.detect_eye_left_image);
-        mRightImageView = (ImageView)findViewById(R.id.detect_eye_right_image);
         loadingLayout = (RelativeLayout) findViewById(R.id.loading_layout);
         rotateLoading = (RotateLoading) findViewById(R.id.rotateloading);
     }
@@ -105,9 +129,9 @@ public class ResultActivity extends AppCompatActivity {
     }*/
 
 
-    private void setResult(ResultProbList resultProbList){
+    private int getLabelFromLogit(ResultProbList resultProbList){
 
-        if(resultProbList == null) return;
+        if(resultProbList == null) return GARBAGE_VALUE;
 
         for (ResultProb resultProb : resultProbList) {
 
@@ -117,16 +141,13 @@ public class ResultActivity extends AppCompatActivity {
             Bitmap tmpLeftBitmap = Bitmap.createScaledBitmap(leftBitmap, WIDTHS[0], HEIGHTS[0], false);
             Bitmap tmpRightBitmap = Bitmap.createScaledBitmap(rightBitmap, WIDTHS[0], HEIGHTS[0], false);
 
-            if(tmpLeftBitmap == null || tmpRightBitmap == null) return;
-
-            mRightImageView.setImageBitmap(tmpLeftBitmap);
-            mLeftImageView.setImageBitmap(tmpRightBitmap);
+            if(tmpLeftBitmap == null || tmpRightBitmap == null) return null;
 
             float[] tempResult = resultProb.getProbResult();
 
             // 확률이 가장 큰 클래스 고르기
-            float maxValue = -1;
-            int result = -1;
+            float maxValue = GARBAGE_VALUE;
+            int result = GARBAGE_VALUE;
             for (int i = 0; i < tempResult.length; i++) {
                 if (maxValue < tempResult[i]) {
                     maxValue = tempResult[i];
@@ -134,32 +155,10 @@ public class ResultActivity extends AppCompatActivity {
                 }
             }
 
-            String sResult = null;
-            if (result == 0) {
-                sResult = "조원태";
-            } else if (result == 1) {
-                sResult = "김태인";
-            } else if (result == 2) {
-                sResult = "길용현";
-            } else if (result == 3) {
-                sResult = "이재선";
-            } else if (result == 4) {
-                sResult = "이다희";
-            } else if (result == 5) {
-                sResult = "남궁희주";
-            } else if (result == 6) {
-                sResult = "박홍화";
-            } else if (result == 7) {
-                sResult = "이재원";
-            } else if (result == 8) {
-                sResult = "남궁종";
-            }
-
-            if(sResult == null) return;
-            mTextView.append(sResult);
-
             // 5장 중 1장으로만 일단 결과값 출력
-            return;
+            return result;
         }
+
+        return GARBAGE_VALUE;
     }
 }

@@ -14,10 +14,9 @@ import android.widget.Toast;
 
 import com.tzutalin.dlib.Constants;
 import com.tzutalin.dlib.FaceDet;
-import com.tzutalin.dlibtest.Dlog;
-import com.tzutalin.dlibtest.R;
-import com.tzutalin.dlibtest.TensorFlowClassifier;
-import com.tzutalin.dlibtest.TensorFlowSimilarityClassifier;
+import com.hongbog.util.Dlog;
+import com.tzutalin.quality.R;
+import com.hongbog.tensorflow.TensorFlowClassifier;
 import com.victor.loading.rotate.RotateLoading;
 
 import hugo.weaving.DebugLog;
