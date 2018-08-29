@@ -1,6 +1,7 @@
 package com.hongbog.view;
 
 import android.content.Intent;
+import android.media.FaceDetector;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import com.hongbog.util.Dlog;
 import com.hongbog.view.InfoActivity;
 import com.hongbog.view.LoadingActivity;
 import com.hongbog.view.SettingActivity;
+import com.tzutalin.dlib.FaceDet;
 import com.tzutalin.quality.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -109,18 +111,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        deInitialize();
+//        faceDetJNIdeInitialize();
         super.onBackPressed();
     }
 
 
-    public void deInitialize() {
-        Dlog.d("deInitialize");
-        /*synchronized (OnGetImageListener.this) {
-            if (mFaceDet != null) {
-                Dlog.d("mFaceDet.release()");
-                mFaceDet.release();
-            }
-        }*/
+    /*@Override
+    protected void onDestroy() {
+        faceDetJNIdeInitialize();
+        super.onDestroy();
     }
+
+
+    private void faceDetJNIdeInitialize() {
+        Dlog.d("deInitialize");
+        FaceDet faceDet = FaceDet.getInstance();
+
+        if (faceDet != null) {
+            Dlog.d("mFaceDet.release()");
+            faceDet.release();
+        }
+    }*/
 }

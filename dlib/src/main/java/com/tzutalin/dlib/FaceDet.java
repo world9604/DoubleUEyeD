@@ -76,12 +76,13 @@ public class FaceDet {
     public List<VisionDetRet> detect(@NonNull Bitmap bitmap) {
         VisionDetRet[] detRets = jniBitmapDetect(bitmap);
 
-        //
         for (int i=0; i<detRets.length; i++) {
             VisionDetRet detect = detRets[i];
 
             ArrayList<Point> landmark = detect.getFaceLandmarks();
-            Log.d(TAG,"DetRet Landmarks.size"+String.valueOf(landmark.size()));
+            Log.d(TAG,"DetRet Landmarks.size : " + String.valueOf(landmark.size()));
+            Log.d(TAG,"DetRet Landmarks.size : " + landmark);
+
             for (int j=0; j<landmark.size(); j++) {
                 Point point = landmark.get(j);
                 Log.d(TAG, "DetRet point: (" + String.valueOf(point.x) + "," + String.valueOf(point.y) + ")");

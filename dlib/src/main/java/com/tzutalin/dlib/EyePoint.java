@@ -4,7 +4,7 @@ package com.tzutalin.dlib;
  * Created by taein on 2018-08-08.
  */
 
-public class EyePoint {
+public abstract class EyePoint {
 
     // 오른쪽 눈
     protected int start_right_x = 0;

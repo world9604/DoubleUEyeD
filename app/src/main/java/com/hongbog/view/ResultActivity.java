@@ -31,6 +31,8 @@ public class ResultActivity extends AppCompatActivity {
     private TensorFlowClassifier classifier;
     private RelativeLayout loadingLayout;
     private RotateLoading rotateLoading;
+    private String SUCCESS_TEXT;
+    private String FAIL_TEXT;
     private static final int GARBAGE_VALUE = -1;
 
     @Override
@@ -59,7 +61,15 @@ public class ResultActivity extends AppCompatActivity {
             if(mode != null && VERIFY_EXTRA.equals(mode)){
 
                 Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
-                mTextView.setText(label);
+
+                SharedPreferences sharedPreferences = getSharedPreferences("LABEL", this.MODE_PRIVATE);
+                int enrolledLabel = sharedPreferences.getInt("enrolledLabel", GARBAGE_VALUE);
+
+                if (enrolledLabel == label) {
+                    mTextView.setText(SUCCESS_TEXT);
+                }else{
+                    mTextView.setText(FAIL_TEXT);
+                }
 
             }else if(mode != null && ENROLL_EXTRA.equals(mode)){
 
@@ -68,6 +78,7 @@ public class ResultActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("LABEL", this.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("enrolledLabel", label);
+                mTextView.setText(label);
 
             }else{
 
@@ -118,6 +129,8 @@ public class ResultActivity extends AppCompatActivity {
         mTextView = (TextView)findViewById(R.id.label_textview);
         loadingLayout = (RelativeLayout) findViewById(R.id.loading_layout);
         rotateLoading = (RotateLoading) findViewById(R.id.rotateloading);
+        SUCCESS_TEXT = this.getString(R.string.verification_success);
+        FAIL_TEXT = this.getString(R.string.verification_fail);
     }
 
 
@@ -141,7 +154,7 @@ public class ResultActivity extends AppCompatActivity {
             Bitmap tmpLeftBitmap = Bitmap.createScaledBitmap(leftBitmap, WIDTHS[0], HEIGHTS[0], false);
             Bitmap tmpRightBitmap = Bitmap.createScaledBitmap(rightBitmap, WIDTHS[0], HEIGHTS[0], false);
 
-            if(tmpLeftBitmap == null || tmpRightBitmap == null) return null;
+            if(tmpLeftBitmap == null || tmpRightBitmap == null) return GARBAGE_VALUE;
 
             float[] tempResult = resultProb.getProbResult();
 
@@ -154,11 +167,9 @@ public class ResultActivity extends AppCompatActivity {
                     result = i;
                 }
             }
-
             // 5장 중 1장으로만 일단 결과값 출력
             return result;
         }
-
         return GARBAGE_VALUE;
     }
 }

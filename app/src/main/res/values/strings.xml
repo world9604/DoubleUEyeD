@@ -20,7 +20,9 @@
     <string name="enroll_size_text">등록 촬영 데이터 수 : </string>
     <string name="setting_btn">설정</string>
     <string name="not_number_format">숫자 형식이 아닙니다.</string>
-    <string name="sir_text">님</string>
+    <string name="sir">님</string>
+    <string name="verification_success">환영합니다!</string>
+    <string name="verification_fail">인식에 실패 하였습니다!</string>
     <string name="ball_background_image_des">ball_background</string>
     <string name="ball_background_grid_image_des">ball_background_grid</string>
 </resources>

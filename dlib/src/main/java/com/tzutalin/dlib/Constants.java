@@ -1,6 +1,7 @@
 package com.tzutalin.dlib;
 
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 
