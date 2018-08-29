@@ -1,5 +1,6 @@
 package com.hongbog.image.quality;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -9,6 +10,7 @@ import com.hongbog.image.quality.EAR;
 import com.hongbog.image.quality.Glace;
 import com.hongbog.image.quality.VoL;
 import com.tzutalin.dlib.VisionDetRet;
+import com.tzutalin.quality.R;
 
 import java.util.ArrayList;
 
@@ -62,8 +64,6 @@ public class CheckQuality {
         this.mbitCrop_eye = bitCrop_eye;
         this.mbitCrop_L = bitCrop_L;
         this.mbitCrop_R = bitCrop_R;
-
-
 
     }
 

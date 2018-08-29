@@ -2,32 +2,38 @@ package com.hongbog.view;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.hongbog.util.Dlog;
 import com.hongbog.util.LabelSharedPreference;
+import com.hongbog.util.PreferenceUtil;
 import com.tzutalin.quality.R;
 
 import static com.hongbog.util.LabelSharedPreference.PreferenceConstant.PREF_KEY;
+import static com.hongbog.view.CameraActivity.SUCCESS_ENROLL;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = "MainActivity";
     public static final String ACTIVITY_FLOW_EXTRA = "ACTIVITY_FLOW_EXTRA";
     public static final String VERIFY_EXTRA = "VERIFY_EXTRA";
     public static final String ENROLL_EXTRA = "ENROLL_EXTRA";
     public static final String DEVELOP_MODE_EXTRA = "DEVELOP_MODE_EXTRA";
+    private static final int REQUEST_CODE = 2;
     private String NOT_ENROLLED_USER_TEXT;
     private String DELETE_ENROLLED_DATA_TEXT;
-    private LabelSharedPreference labelSharedPreference;
+    private String SUCCESS_ENROLL_TEXT;
     private ImageButton verifyBtn;
     private ImageButton enrollBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         NOT_ENROLLED_USER_TEXT = this.getString(R.string.not_enrolled_user);
         DELETE_ENROLLED_DATA_TEXT = this.getString(R.string.delete_enrolled_data);
-        labelSharedPreference = new LabelSharedPreference(this);
+        SUCCESS_ENROLL_TEXT = this.getString(R.string.success_enroll);
     }
 
 
@@ -76,11 +82,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, CameraActivity.class);
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, VERIFY_EXTRA);
 
-                boolean isEnroll = labelSharedPreference.contains();
+                boolean isEnroll = PreferenceUtil.getInstance(this).contains();
+
                 Dlog.d("isEnroll : " + isEnroll );
 
                 if(isEnroll == false){
-                    Snackbar.make(v, NOT_ENROLLED_USER_TEXT, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, NOT_ENROLLED_USER_TEXT, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -91,7 +98,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, ENROLL_EXTRA);
                 break;
         }
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Dlog.d("requestCode : " + requestCode);
+        Dlog.d("resultCode : " + resultCode);
+
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == SUCCESS_ENROLL){
+                Snackbar.make(verifyBtn, SUCCESS_ENROLL_TEXT, Snackbar.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -115,8 +136,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.delete_enrolled_data:
-                labelSharedPreference.clear();
-                Snackbar.make(verifyBtn, DELETE_ENROLLED_DATA_TEXT, Snackbar.LENGTH_LONG).show();
+                PreferenceUtil.getInstance(this).clear();
+                Snackbar.make(verifyBtn, DELETE_ENROLLED_DATA_TEXT, Snackbar.LENGTH_SHORT).show();
                 break;
             case R.id.setting_mode:
                 intent.setClass(this, SettingActivity.class);

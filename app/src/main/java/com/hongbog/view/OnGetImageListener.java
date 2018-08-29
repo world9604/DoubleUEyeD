@@ -1,6 +1,7 @@
 package com.hongbog.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -12,12 +13,16 @@ import android.media.Image;
 import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Trace;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.hongbog.dto.SensorDTO;
 import com.hongbog.image.quality.CheckQuality;
@@ -30,6 +35,9 @@ import com.tzutalin.quality.R;
 
 import junit.framework.Assert;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -485,14 +493,23 @@ public class OnGetImageListener implements OnImageAvailableListener {
                     if(mNumCrop == (CameraConnectionFragment.VERIFY_INPUT_DATA_SIZE - 1)){
                         mNumCrop = 0;
 
-                        Map<String, Bitmap[]> map = new HashMap<>();
-                        map.put("bitmap_both", bitmap_both);
-                        map.put("bitmap_left", bitmap_left);
-                        map.put("bitmap_right", bitmap_right);
+                        String[] bitmapLeftPath = ImageUtils.makeRandomFileName(bitmap_left.length, "bitmap_left");
+                        String[] bitmapRightPath = ImageUtils.makeRandomFileName(bitmap_right.length, "bitmap_right");
+
+                        SaveImageTask saveLeftBitmapTask = new SaveImageTask(bitmapLeftPath);
+                        saveLeftBitmapTask.execute(bitmap_left);
+
+                        SaveImageTask saveRightBitmapTask = new SaveImageTask(bitmapRightPath);
+                        saveRightBitmapTask.execute(bitmap_right);
+
+                        Bundle bitmapPathArrayBundle = new Bundle();
+                        bitmapPathArrayBundle.putStringArray("bitmap_left", bitmapLeftPath);
+                        bitmapPathArrayBundle.putStringArray("bitmap_right", bitmapRightPath);
 
                         mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.FULL_CAPTURE_COMPLETE);
-                        mMsg.obj = map;
+                        mMsg.setData(bitmapPathArrayBundle);
                         mMsg.sendToTarget();
+
                         return;
                     }
 
@@ -535,8 +552,29 @@ public class OnGetImageListener implements OnImageAvailableListener {
             }
             mIsComputing = false;
         }
-
     }
+
+
+    private class SaveImageTask extends AsyncTask<Bitmap, Void, Bundle> {
+
+        private String[] mFileNames;
+
+        public SaveImageTask(String[] mFileNames) {
+            this.mFileNames = mFileNames;
+        }
+
+        @Override
+        protected Bundle doInBackground(Bitmap... bitmaps) {
+
+            for(int i = 0; i < bitmaps.length; i++){
+                Bitmap bitmap = bitmaps[i];
+                ImageUtils.saveBitmap2(bitmap, mFileNames[i]);
+            }
+
+            return null;
+        }
+    }
+
 
     /**
      *  웹 서버로 png(byte[]), sensor value, label 전송
@@ -551,6 +589,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
         }.start();
     }
 
+
     private final Callback httpCallback = new Callback() {
 
         @Override
@@ -564,6 +603,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
             Log.e(TAG, "Server Response Body : " + body);
         }
     };
+
 
     public class SensorChangeHandler extends Handler{
 

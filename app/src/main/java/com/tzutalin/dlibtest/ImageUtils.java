@@ -21,7 +21,10 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.annotation.Keep;
 
+import com.hongbog.util.Dlog;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +41,7 @@ public class ImageUtils {
      * Saves a Bitmap object to disk for analysis.
      * @param bitmap The bitmap to save.
      */
-    public static void saveBitmap(final Bitmap bitmap, String stringTime) {
+    public static void saveBitmap(final Bitmap bitmap, String fileName) {
         final String root =
                 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "dlib";
         Timber.tag(TAG).d(String.format("Saving %dx%d bitmap to %s.", bitmap.getWidth(), bitmap.getHeight(), root));
@@ -51,7 +54,7 @@ public class ImageUtils {
         String fname = ".png";
         Date today = new Date();
         String str = today.toString();
-        fname = stringTime + fname;
+        fname = fileName + fname;
         //fname = str+"t"+ stringTime +fname;
 
         final File file = new File(myDir, fname);
@@ -69,13 +72,38 @@ public class ImageUtils {
     }
 
 
+    public static void saveBitmap2(final Bitmap bitmap, String fileName) {
+
+        final File file = new File(fileName);
+        Dlog.d("fileName : " +  fileName);
+
+        if (!file.mkdirs()) {
+            Timber.tag(TAG).e("Make dir failed");
+        }
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        try {
+            final FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            bitmap.recycle();
+            out.flush();
+            out.close();
+        } catch (final Exception e) {
+            Timber.tag(TAG).e("Exception!", e);
+        }
+    }
+
+
     /**
      * Saves a Bitmap object to disk for analysis.
      * @param bitmap The bitmap to save.
-     * @param stringTime file Name
+     * @param fileName file Name
      * @param dirName directory Name
      */
-    public static void saveBitmap(final Bitmap bitmap, final String stringTime, final String dirName) {
+    public static void saveBitmap(final Bitmap bitmap, final String fileName, final String dirName) {
         final String root =
                 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "dlib" + File.separator + dirName;
         Timber.tag(TAG).d(String.format("Saving %dx%d bitmap to %s.", bitmap.getWidth(), bitmap.getHeight(), root));
@@ -88,7 +116,7 @@ public class ImageUtils {
         String fname = ".png";
         Date today = new Date();
         String str = today.toString();
-        fname = stringTime + fname;
+        fname = fileName + fname;
         //fname = str+"t"+ stringTime +fname;
 
         final File file = new File(myDir, fname);
@@ -103,6 +131,19 @@ public class ImageUtils {
         } catch (final Exception e) {
             Timber.tag(TAG).e("Exception!", e);
         }
+    }
+
+
+    public static String[] makeRandomFileName(int size, String dirName) {
+        String[] paths = new String[size];
+
+        for(int i=0; i < size; i++){
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + File.separator + dirName + "_" + System.currentTimeMillis() + "_" + i + ".png";
+            paths[i] = path;
+        }
+
+        return paths;
     }
 
 
@@ -131,6 +172,56 @@ public class ImageUtils {
         }
 
         return bitmapArrayList;
+    }
+
+
+    /*public static Bitmap extractBitmap2 (final String dirName) {
+
+        if (dirName == null) return null;
+
+        final File myDir = new File(dirName);
+
+        if(!myDir.exists()) return  null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeFile(myDir.getAbsolutePath(), options);
+
+        Dlog.d("myDir.getAbsolutePath() : " + myDir.getAbsolutePath());
+
+        return bitmap;
+    }*/
+
+
+    /**
+     * Saves a Bitmap object to disk for analysis.
+     * @param filePath full file path
+     * @return extract Bitmap from path
+     */
+    public static Bitmap extractBitmapFromDirName(String filePath){
+        try {
+            Dlog.d("filePath : " + filePath);
+            FileInputStream is = new FileInputStream(filePath);
+            Bitmap bmp = BitmapFactory.decodeStream(is);
+            is.close();
+            return bmp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static void deleteBitmapFromFileName(String filePath){
+        try {
+            File file = new File(filePath);
+
+            if(file.exists()){
+                file.delete();
+            }
+        } catch (Exception e) {
+            Dlog.e("Exception Message : " + e.getMessage());
+        }
     }
 
 

@@ -67,6 +67,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.hongbog.util.Dlog;
+import com.tzutalin.dlibtest.ImageUtils;
 import com.tzutalin.quality.R;
 
 import java.util.ArrayList;
@@ -732,15 +733,15 @@ public class CameraConnectionFragment extends Fragment {
             switch (msg.what){
                 case FULL_CAPTURE_COMPLETE:
                     Dlog.d("FULL_CAPTURE_COMPLETE");
-                    final Map<String, Bitmap[]> eyeBitmap = (Map<String, Bitmap[]>)msg.obj;
+                    final Bundle bitmapPathsBundle = msg.getData();
 
-                    if(eyeBitmap == null){
+                    if(bitmapPathsBundle == null){
                         ErrorDialog.newInstance("eyeBitmap is Null")
                                 .show(getFragmentManager(), this.getClass().getSimpleName());
                     }
 
                     CameraActivity activity = ((CameraActivity)getActivity());
-                    activity.goMain(eyeBitmap.get("bitmap_left"), eyeBitmap.get("bitmap_right"));
+                    activity.goActivityWithBitmapPathBundle(bitmapPathsBundle);
                     break;
                 case STOP_ACTIVITY:
                     Dlog.d("STOP_ACTIVITY");
@@ -758,6 +759,16 @@ public class CameraConnectionFragment extends Fragment {
                     break;
             }
         }
+    }
+
+
+    private void saveImage(Bitmap[] bitmaps, String[] mFileNames){
+
+        for(int i = 0; i < bitmaps.length; i++){
+            Bitmap bitmap = bitmaps[i];
+            ImageUtils.saveBitmap2(bitmap, mFileNames[i]);
+        }
+
     }
 
 

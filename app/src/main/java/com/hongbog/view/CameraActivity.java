@@ -46,7 +46,7 @@ import static com.hongbog.view.MainActivity.VERIFY_EXTRA;
  */
 public class CameraActivity extends Activity {
 
-    private static final String TAG = "i99";
+    public static final int SUCCESS_ENROLL = 99;
     private static int OVERLAY_PERMISSION_REQ_CODE = 1;
     private long startTime;
     private RelativeLayout loadingLayout;
@@ -86,48 +86,42 @@ public class CameraActivity extends Activity {
     }
 
 
-    public void goMain(Bitmap bitmap_left[], Bitmap bitmap_right[]) {
+    public void goActivityWithBitmapPathBundle(Bundle bitmapPathsBundle) {
 
-        if (bitmap_left == null || bitmap_right == null){
-            Dlog.e("bitmap_left || bitmap_right is Null, So Finish this Activity");
+        if (bitmapPathsBundle == null){
+            Dlog.e("bitmapPathsBundle is Null, So Finish this Activity");
             finish();
-        }
-
-        ArrayList<ParcelBitmap> left_lst = new ArrayList<>();
-        ArrayList<ParcelBitmap> right_lst = new ArrayList<>();
-
-        for (int i = 0; i <bitmap_left.length; i++) {
-            left_lst.add(new ParcelBitmap( bitmap_left[i] ));
-            right_lst.add(new ParcelBitmap( bitmap_right[i] ));
+            return;
         }
 
         // 리스트에 이미지 넣기
         Intent intent = getIntent();
         String mode = intent.getStringExtra(ACTIVITY_FLOW_EXTRA);
 
-        if (mode != null && DEVELOP_MODE_EXTRA.equals(mode)) {
+        if(mode == null) {
+            Dlog.e("intent.getStringExtra(ACTIVITY_FLOW_EXTRA) is Null");
+            finish();
+            return;
+        }
+
+        if (DEVELOP_MODE_EXTRA.equals(mode)) {
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultTestActivity.class);
-        }else if(mode != null && VERIFY_EXTRA.equals(mode)){
+        }else if(VERIFY_EXTRA.equals(mode)){
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultActivity.class);
-        }else if(mode != null && ENROLL_EXTRA.equals(mode)){
+        }else if(ENROLL_EXTRA.equals(mode)){
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultActivity.class);
+            setResult(SUCCESS_ENROLL, intent);
         }else{
             return;
         }
 
-        Bundle bundle = new Bundle();
-
-        // 데이터 전달
-        bundle.putParcelableArrayList("LeftEyeList", left_lst);
-        bundle.putParcelableArrayList("RightEyeList", right_lst);
-        intent.putExtras(bundle);
+        intent.putExtras(bitmapPathsBundle);
 
         startActivity(intent);
         finish();
-
     }
 
     @Override

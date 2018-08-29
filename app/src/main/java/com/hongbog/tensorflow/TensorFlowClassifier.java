@@ -231,8 +231,8 @@ public class TensorFlowClassifier {
     public ResultProbList Verification(Bundle bundle) {
         long startTime = System.currentTimeMillis();
 
-        ArrayList<ParcelBitmap> left = bundle.getParcelableArrayList("LeftEyeList");
-        ArrayList<ParcelBitmap> right = bundle.getParcelableArrayList("RightEyeList");
+        ArrayList<Bitmap> left = bundle.getParcelableArrayList("LeftEyeList");
+        ArrayList<Bitmap> right = bundle.getParcelableArrayList("RightEyeList");
 
         int bundleSize = left.size();
 
@@ -241,11 +241,11 @@ public class TensorFlowClassifier {
 
         // 리스트에서 이미지 꺼내오기
         for (int num = 0; num < bundleSize; num++) {
-            ParcelBitmap addData = left.get(num);
-            bitmap_left[num] = addData.getBitmap();
+            Bitmap addData = left.get(num);
+            bitmap_left[num] = addData;
 
-            ParcelBitmap addDataa = right.get(num);
-            bitmap_right[num] = addDataa.getBitmap();
+            Bitmap addDataa = right.get(num);
+            bitmap_right[num] = addDataa;
         }
 
         ResultProbList resultList = new ResultProbList();

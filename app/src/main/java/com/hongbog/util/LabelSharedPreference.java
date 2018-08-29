@@ -46,18 +46,18 @@ public class LabelSharedPreference {
         return preferences.contains(PREF_KEY);
     }
 
-    public boolean putInt(int value){
+    public void putInt(int value){
         editor.putInt(PREF_KEY, value);
-        return editor.commit();
+        editor.apply();
     }
 
-    public boolean removeKey(String keyName){
+    public void removeKey(String keyName){
         editor.remove(keyName);
-        return editor.commit();
+        editor.apply();
     }
 
-    public boolean clear(){
+    public void clear(){
         editor.clear();
-        return editor.commit();
+        editor.apply();
     }
 }

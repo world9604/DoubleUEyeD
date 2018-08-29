@@ -9,17 +9,20 @@ import android.os.Parcelable;
 
 public class ParcelBitmap implements Parcelable {
 
-    private Bitmap mSrc = null;
-
+    public Bitmap mSrc = null;
 
     public ParcelBitmap(Bitmap src) {
         if (src != null)
             mSrc = Bitmap.createBitmap(src);
     }
 
-
     public final Bitmap getBitmap(){
         return this.mSrc;
+    }
+
+
+    public void setBitmap(Bitmap bitmap){
+        this.mSrc = bitmap;
     }
 
 
