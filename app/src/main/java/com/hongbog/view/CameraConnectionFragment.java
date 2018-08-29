@@ -66,7 +66,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.hongbog.image.quality.CameraActivity;
 import com.hongbog.util.Dlog;
 import com.tzutalin.quality.R;
 

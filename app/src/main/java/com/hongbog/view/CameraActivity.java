@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hongbog.image.quality;
+package com.hongbog.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,10 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hongbog.util.Dlog;
-import com.hongbog.view.GforceFragment;
-import com.hongbog.view.ResultActivity;
-import com.hongbog.view.ResultTestActivity;
-import com.hongbog.view.CameraConnectionFragment;
 import com.hongbog.dto.ParcelBitmap;
 import com.tzutalin.quality.R;
 import com.victor.loading.rotate.RotateLoading;

@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.hongbog.image.quality.CameraActivity"
+            android:name="com.hongbog.view.CameraActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name="com.hongbog.view.InfoActivity" />
         <activity android:name="com.hongbog.view.ResultTestActivity" />

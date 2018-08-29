@@ -182,7 +182,9 @@ public class ResultTestActivity extends AppCompatActivity{
             float[] pro = resultPro.getProbResult();
 
             for (int i = 0; i < 7; i++) {
-                if(i==3){resultText.append("\n");}
+
+                if(i==3) resultText.append("\n");
+
                 resultText.append( i + " :"+ String.format("%.2f", pro[i]) + " / ");
             }
 
@@ -190,5 +192,35 @@ public class ResultTestActivity extends AppCompatActivity{
         }
 
         resultClassText.append("\nVerification Time: "+String.valueOf(verificationtime));
+    }
+
+
+    private void setResult2(ResultProbList resultProbList){
+
+        if(resultProbList == null) return;
+
+        long verificationtime = resultProbList.getVerificationtime();
+
+        for(ResultProb resultProb : resultProbList){
+
+            Bitmap leftBitmap = resultProb.getLeftBitmap();
+            Bitmap rightBitmap = resultProb.getRightBitmap();
+
+            float[] tempResult = resultProb.getProbResult();
+
+            // 확률이 가장 큰 클래스 고르기
+            float maxValue = -1;
+            int result = -1;
+            for (int i = 0; i < tempResult.length; i++) {
+                if (maxValue < tempResult[i]) {
+                    maxValue = tempResult[i];
+                    result = i;
+                }
+            }
+        }
+
+
+
+
     }
 }

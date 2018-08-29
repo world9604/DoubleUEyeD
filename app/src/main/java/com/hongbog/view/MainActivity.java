@@ -1,7 +1,6 @@
 package com.hongbog.view;
 
 import android.content.Intent;
-import android.media.FaceDetector;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,12 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.hongbog.image.quality.CameraActivity;
 import com.hongbog.util.Dlog;
-import com.hongbog.view.InfoActivity;
-import com.hongbog.view.LoadingActivity;
-import com.hongbog.view.SettingActivity;
-import com.tzutalin.dlib.FaceDet;
 import com.tzutalin.quality.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -70,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.enroll_btn:
                 Dlog.d("enroll_btn");
-                intent.setClass(this, InfoActivity.class);
+//                intent.setClass(this, InfoActivity.class);
+                intent.setClass(this, CameraActivity.class);
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, ENROLL_EXTRA);
                 break;
         }

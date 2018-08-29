@@ -7,10 +7,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hongbog.util.Dlog;
+import com.hongbog.util.LabelSharedPreference;
 import com.tzutalin.quality.R;
 import com.hongbog.dto.ResultProb;
 import com.hongbog.dto.ResultProbList;
@@ -27,13 +29,14 @@ import static com.hongbog.view.MainActivity.VERIFY_EXTRA;
 
 public class ResultActivity extends AppCompatActivity {
 
-    private TextView mTextView;
+    private TextView textView;
+    private ImageView checkIdentifyImageView;
     private TensorFlowClassifier classifier;
     private RelativeLayout loadingLayout;
     private RotateLoading rotateLoading;
     private String SUCCESS_TEXT;
     private String FAIL_TEXT;
-    private static final int GARBAGE_VALUE = -1;
+    private LabelSharedPreference labelSharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,32 +61,40 @@ public class ResultActivity extends AppCompatActivity {
         String mode = intent.getStringExtra(ACTIVITY_FLOW_EXTRA);
 
         if (mode != null && !"".equals(mode)) {
+
+            labelSharedPref = new LabelSharedPreference(this);
+
             if(mode != null && VERIFY_EXTRA.equals(mode)){
 
-                Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
-
-                SharedPreferences sharedPreferences = getSharedPreferences("LABEL", this.MODE_PRIVATE);
-                int enrolledLabel = sharedPreferences.getInt("enrolledLabel", GARBAGE_VALUE);
+                int enrolledLabel = labelSharedPref.getInt("enrolledLabel");
+                Dlog.d("VERIFY_EXTRA label : " +  enrolledLabel);
 
                 if (enrolledLabel == label) {
-                    mTextView.setText(SUCCESS_TEXT);
+                    setIdentifySuccess();
                 }else{
-                    mTextView.setText(FAIL_TEXT);
+                    setIdentifyFail();
                 }
 
             }else if(mode != null && ENROLL_EXTRA.equals(mode)){
 
-                Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
-
-                SharedPreferences sharedPreferences = getSharedPreferences("LABEL", this.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("enrolledLabel", label);
-                mTextView.setText(label);
-
-            }else{
-
+                Dlog.d("ENROLL_EXTRA label : " + label);
+                labelSharedPref.putInt(label);
+                finish();
             }
+
         }
+    }
+
+
+    private void setIdentifySuccess(){
+        textView.setText(SUCCESS_TEXT);
+        checkIdentifyImageView.setImageResource(R.drawable.identify_success);
+    }
+
+
+    private void setIdentifyFail(){
+        textView.setText(FAIL_TEXT);
+        checkIdentifyImageView.setImageResource(R.drawable.identify_fail);
     }
 
 
@@ -126,7 +137,8 @@ public class ResultActivity extends AppCompatActivity {
 
 
     private void initView(){
-        mTextView = (TextView)findViewById(R.id.label_textview);
+        textView = (TextView)findViewById(R.id.label_textview);
+        checkIdentifyImageView = (ImageView)findViewById(R.id.check_identify_image);
         loadingLayout = (RelativeLayout) findViewById(R.id.loading_layout);
         rotateLoading = (RotateLoading) findViewById(R.id.rotateloading);
         SUCCESS_TEXT = this.getString(R.string.verification_success);
@@ -144,7 +156,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private int getLabelFromLogit(ResultProbList resultProbList){
 
-        if(resultProbList == null) return GARBAGE_VALUE;
+        if(resultProbList == null) return LabelSharedPreference.PreferenceConstant.GARBAGE_VALUE;
 
         for (ResultProb resultProb : resultProbList) {
 
@@ -154,22 +166,23 @@ public class ResultActivity extends AppCompatActivity {
             Bitmap tmpLeftBitmap = Bitmap.createScaledBitmap(leftBitmap, WIDTHS[0], HEIGHTS[0], false);
             Bitmap tmpRightBitmap = Bitmap.createScaledBitmap(rightBitmap, WIDTHS[0], HEIGHTS[0], false);
 
-            if(tmpLeftBitmap == null || tmpRightBitmap == null) return GARBAGE_VALUE;
+            if(tmpLeftBitmap == null || tmpRightBitmap == null) return LabelSharedPreference.PreferenceConstant.GARBAGE_VALUE;
 
             float[] tempResult = resultProb.getProbResult();
 
             // 확률이 가장 큰 클래스 고르기
-            float maxValue = GARBAGE_VALUE;
-            int result = GARBAGE_VALUE;
+            float maxValue = LabelSharedPreference.PreferenceConstant.GARBAGE_VALUE;
+            int result = LabelSharedPreference.PreferenceConstant.GARBAGE_VALUE;
+
             for (int i = 0; i < tempResult.length; i++) {
                 if (maxValue < tempResult[i]) {
                     maxValue = tempResult[i];
                     result = i;
                 }
             }
-            // 5장 중 1장으로만 일단 결과값 출력
+
             return result;
         }
-        return GARBAGE_VALUE;
+        return LabelSharedPreference.PreferenceConstant.GARBAGE_VALUE;
     }
 }

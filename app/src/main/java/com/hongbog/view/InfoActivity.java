@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.hongbog.image.quality.CameraActivity;
 import com.tzutalin.quality.R;
 
 public class InfoActivity extends AppCompatActivity implements View.OnClickListener{
