@@ -25,4 +25,6 @@
     <string name="verification_fail">인식에 실패 하였습니다!</string>
     <string name="ball_background_image_des">ball_background</string>
     <string name="ball_background_grid_image_des">ball_background_grid</string>
+    <string name="not_enrolled_user">등록된 유저가 없습니다</string>
+    <string name="delete_enrolled_data">등록 데이터 삭제</string>
 </resources>

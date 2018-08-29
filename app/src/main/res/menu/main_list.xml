@@ -14,5 +14,9 @@
         android:id="@+id/develop_mode"
         android:title="@string/develop_mode"
         android:orderInCategory="10"/>
+    <item
+        android:id="@+id/delete_enrolled_data"
+        android:title="@string/delete_enrolled_data"
+        android:orderInCategory="10"/>
 
 </menu>

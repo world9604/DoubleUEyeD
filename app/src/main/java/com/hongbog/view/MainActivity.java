@@ -1,7 +1,9 @@
 package com.hongbog.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +11,10 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.hongbog.util.Dlog;
+import com.hongbog.util.LabelSharedPreference;
 import com.tzutalin.quality.R;
+
+import static com.hongbog.util.LabelSharedPreference.PreferenceConstant.PREF_KEY;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -18,7 +23,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String VERIFY_EXTRA = "VERIFY_EXTRA";
     public static final String ENROLL_EXTRA = "ENROLL_EXTRA";
     public static final String DEVELOP_MODE_EXTRA = "DEVELOP_MODE_EXTRA";
-
+    private String NOT_ENROLLED_USER_TEXT;
+    private String DELETE_ENROLLED_DATA_TEXT;
+    private LabelSharedPreference labelSharedPreference;
+    private ImageButton verifyBtn;
+    private ImageButton enrollBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -42,11 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initView(){
-        ImageButton verifyBtn = (ImageButton)findViewById(R.id.verify_btn);
-        ImageButton enrollBtn = (ImageButton)findViewById(R.id.enroll_btn);
+        verifyBtn = (ImageButton)findViewById(R.id.verify_btn);
+        enrollBtn = (ImageButton)findViewById(R.id.enroll_btn);
 
         verifyBtn.setOnClickListener(this);
         enrollBtn.setOnClickListener(this);
+
+        NOT_ENROLLED_USER_TEXT = this.getString(R.string.not_enrolled_user);
+        DELETE_ENROLLED_DATA_TEXT = this.getString(R.string.delete_enrolled_data);
+        labelSharedPreference = new LabelSharedPreference(this);
     }
 
 
@@ -59,18 +72,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (id){
             case R.id.verify_btn:
                 Dlog.d("verify_btn");
+
                 intent.setClass(this, CameraActivity.class);
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, VERIFY_EXTRA);
+
+                boolean isEnroll = labelSharedPreference.contains();
+                Dlog.d("isEnroll : " + isEnroll );
+
+                if(isEnroll == false){
+                    Snackbar.make(v, NOT_ENROLLED_USER_TEXT, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 break;
             case R.id.enroll_btn:
                 Dlog.d("enroll_btn");
-//                intent.setClass(this, InfoActivity.class);
                 intent.setClass(this, CameraActivity.class);
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, ENROLL_EXTRA);
                 break;
         }
-
-        Dlog.d("onClick");
         startActivity(intent);
     }
 
@@ -93,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, CameraActivity.class);
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, DEVELOP_MODE_EXTRA);
                 startActivity(intent);
+                break;
+            case R.id.delete_enrolled_data:
+                labelSharedPreference.clear();
+                Snackbar.make(verifyBtn, DELETE_ENROLLED_DATA_TEXT, Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.setting_mode:
                 intent.setClass(this, SettingActivity.class);

@@ -66,8 +66,9 @@ public class ResultActivity extends AppCompatActivity {
 
             if(mode != null && VERIFY_EXTRA.equals(mode)){
 
-                int enrolledLabel = labelSharedPref.getInt("enrolledLabel");
-                Dlog.d("VERIFY_EXTRA label : " +  enrolledLabel);
+                int enrolledLabel = labelSharedPref.getInt();
+                Dlog.d("VERIFY_EXTRA enrolledLabel : " +  enrolledLabel);
+                Dlog.d("VERIFY_EXTRA label : " +  label);
 
                 if (enrolledLabel == label) {
                     setIdentifySuccess();
@@ -80,6 +81,7 @@ public class ResultActivity extends AppCompatActivity {
                 Dlog.d("ENROLL_EXTRA label : " + label);
                 labelSharedPref.putInt(label);
                 finish();
+
             }
 
         }
@@ -180,9 +182,9 @@ public class ResultActivity extends AppCompatActivity {
                     result = i;
                 }
             }
-
             return result;
         }
+
         return LabelSharedPreference.PreferenceConstant.GARBAGE_VALUE;
     }
 }

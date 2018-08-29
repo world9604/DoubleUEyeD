@@ -224,25 +224,6 @@ public class TensorFlowClassifier {
             }
         }
 
-        String temp = "";
-        for (int i = 0; i < result.length; i++) {
-            temp += result[i] + ",";
-        }
-        Log.d(TAG, temp);
-        /*
-        float maxValue = -1;
-        int maxIndex = -1;
-        for (int i = 0; i < this.numClasses; i++) {
-            if (maxValue < result[i]) {
-                maxValue = result[i];
-                maxIndex = i;
-            }
-        }
-        long endTime = System.currentTimeMillis();
-
-
-        return maxIndex;
-        */
         return result;
     }
 
@@ -279,9 +260,6 @@ public class TensorFlowClassifier {
 
                 Bitmap tmpLeftBitmap = Bitmap.createScaledBitmap(oriLeftBitmap, WIDTHS[i], HEIGHTS[i], false);
                 Bitmap tmpRightBitmap = Bitmap.createScaledBitmap(oriRightBitmap, WIDTHS[i], HEIGHTS[i], false);
-
-                Dlog.d(i + " right: (" + tmpRightBitmap.getWidth() + "," + tmpRightBitmap.getHeight() + "), " +
-                        "left: (" + tmpLeftBitmap.getWidth() + "," + tmpLeftBitmap.getHeight() + ")");
 
                 if (i == 0) {
                     lowRightData = grayScale_Equalization_Norm(tmpRightBitmap);

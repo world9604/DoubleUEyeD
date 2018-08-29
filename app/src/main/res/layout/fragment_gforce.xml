@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/ball_background_image_des"
         android:scaleType="fitXY"
-        android:src="@drawable/bg" />
+        android:background="@color/White"/>
 
     <ImageView
         android:id="@+id/grid"

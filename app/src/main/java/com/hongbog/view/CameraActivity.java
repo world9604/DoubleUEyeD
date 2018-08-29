@@ -130,13 +130,6 @@ public class CameraActivity extends Activity {
 
     }
 
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
-
     @Override
     protected void onStart() {
         Dlog.d("onStart");
@@ -199,7 +192,6 @@ public class CameraActivity extends Activity {
     }
 
     public void stopLoadingAnimation() {
-
         Dlog.d("stopLoadingAnimation");
 
         loadingLayout.setVisibility(View.GONE);
