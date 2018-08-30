@@ -52,7 +52,6 @@ import okhttp3.Response;
 public class OnGetImageListener implements OnImageAvailableListener {
 
     private static final int INPUT_SIZE = 720;  // 500;   // 500;    // 224;
-    private static final String TAG = "i99";
 
     private int mScreenRotation = 90;
     private int mPreviewWdith = 0;
@@ -180,7 +179,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
         getOrient.getSize(point);
         int screen_width = point.x;
         int screen_height = point.y;
-       // Log.i(TAG, String.format("screen size (%d,%d)", screen_width, screen_height));  // screen size (1080,1920)
+
         if (screen_width < screen_height) {
             orientation = Configuration.ORIENTATION_PORTRAIT;
             mScreenRotation = 270;
@@ -308,28 +307,6 @@ public class OnGetImageListener implements OnImageAvailableListener {
 
             for (final VisionDetRet ret : results) {
 
-                /*Dlog.d("");
-                Dlog.d("mOverlayStartRightX <= ret.start_right_x " + (mOverlayStartRightX <= ret.start_right_x));
-                Dlog.d("mOverlayEndRightX >= ret.end_right_x " + (mOverlayEndRightX >= ret.end_right_x));
-                Dlog.d("mOverlayStartRightY <= ret.start_right_y " + (mOverlayStartRightY <= ret.start_right_y));
-                Dlog.d("mOverlayEndRightY >= ret.end_right_y " + (mOverlayEndRightY >= ret.end_right_y));
-                Dlog.d("mOverlayStartLeftX <= ret.start_left_x " + (mOverlayStartLeftX <= ret.start_left_x));
-                Dlog.d("mOverlayEndLeftX >= ret.end_left_x " + (mOverlayEndLeftX >= ret.end_left_x));
-                Dlog.d("mOverlayStartLeftY <= ret.start_left_y " + (mOverlayStartLeftY <= ret.start_left_y));
-                Dlog.d("mOverlayEndLeftY >= ret.end_left_y " + (mOverlayEndLeftY >= ret.end_left_y));
-                Dlog.d("");
-                Dlog.d("mOverlayStartRightY " + mOverlayStartRightY);
-                Dlog.d("ret.start_right_y " + ret.start_right_y);
-                Dlog.d("");
-                Dlog.d("ret.getHightLeft() " + ret.getHightLeft());
-                Dlog.d("");
-                Dlog.d("mOverlayEndRightY " + mOverlayEndRightY);
-                Dlog.d("ret.end_right_y " + ret.end_right_y);
-                Dlog.d("");
-                Dlog.d("mOverlayEndLeftY " + mOverlayEndLeftY);
-                Dlog.d("ret.end_left_y " + ret.end_left_y);
-                Dlog.d("");*/
-
                 Bitmap bitCrop_B;
                 Bitmap bitCrop_L;
                 Bitmap bitCrop_R;
@@ -344,7 +321,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                     break;
                 }
 
-                CheckQuality quality = new CheckQuality(ret, mBitmap, bitCrop_B, bitCrop_L, bitCrop_R);
+                CheckQuality quality = new CheckQuality(ret, mBitmap, bitCrop_B, bitCrop_L, bitCrop_R, mContext);
 
                 float acelX = Float.parseFloat(String.format("%.2f", mSensorDTO.getAccelX()));
                 float acelZ = Float.parseFloat(String.format("%.2f", mSensorDTO.getAccelZ()));
@@ -594,13 +571,11 @@ public class OnGetImageListener implements OnImageAvailableListener {
 
         @Override
         public void onFailure(Call call, IOException e) {
-            Log.e(TAG, "Callback Error Message : " + e.getMessage());
         }
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
             String body = response.body().string();
-            Log.e(TAG, "Server Response Body : " + body);
         }
     };
 

@@ -28,4 +28,10 @@
     <string name="not_enrolled_user">등록된 유저가 없습니다</string>
     <string name="delete_enrolled_data">등록 데이터 삭제</string>
     <string name="success_enroll">등록 성공</string>
+    <string name="state_test_check_nearness">Please, Move backward</string>
+    <string name="state_test_check_farness">Please, Come closer</string>
+    <string name="state_test_check_blurry">Please, Do not move your face</string>
+    <string name="state_test_check_ear">Please, Open your eyes wide</string>
+    <string name="state_test_check_glance">Please, Do not turn your face and Look Forward</string>
+    <string name="state_test_check_tilt">Please, Do not tilt your head</string>
 </resources>

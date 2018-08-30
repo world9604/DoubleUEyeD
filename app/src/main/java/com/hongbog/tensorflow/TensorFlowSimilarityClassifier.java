@@ -171,7 +171,7 @@ public class TensorFlowSimilarityClassifier {
 
 
     /**
-     * 오른쪽/왼쪽 눈에 대한 verification 을 수행하는 함수
+     * 오른쪽/왼쪽 눈에 대한 match_ko_btn 을 수행하는 함수
      * @param rightLowOriData
      * @param rightLowQueryData
      * @param rightMidOriData
@@ -194,7 +194,7 @@ public class TensorFlowSimilarityClassifier {
                                float[] leftHighOriData, float[] leftHighQueryData) {
         long startTime = System.currentTimeMillis();
 
-        TraceCompat.beginSection("verification");
+        TraceCompat.beginSection("match_ko_btn");
 
         TraceCompat.beginSection("feed");
         for (int i = 0; i < this.widths.length; i++) {

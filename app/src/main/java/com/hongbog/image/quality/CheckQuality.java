@@ -27,8 +27,16 @@ public class CheckQuality {
 
     private static final int THRESHOLD_OF_BLURRY_IMAGE = 10;
     private static final double THRESHOLD_OF_EAR = 0.23;
-    private static final int THRESHOLD_OF_SIDE_GLACE = 25;
-    private static final int THRESHOLE_OF_TILT = 10;
+    private static final int THRESHOLD_OF_SIDE_GLANCE = 25;
+    private static final int THRESHOLE_OF_TILT = 15;
+
+
+    private String STATE_TEXT_CHECK_NEARNESS;
+    private String STATE_TEXT_CHECK_FARNESS;
+    private String STATE_TEXT_CHECK_BLURRY;
+    private String STATE_TEXT_CHECK_EAR;
+    private String STATE_TEXT_CHECK_GLANCE;
+    private String STATE_TEXT_CHECK_TILT;
 
     private VisionDetRet mRet;
     private Bitmap mBitmap;
@@ -50,13 +58,16 @@ public class CheckQuality {
     private boolean glace = true;
     private boolean rotate = true;
 
+    private Context mContext;
+
+
 
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("opencv_java3");
     }
 
-    public CheckQuality(VisionDetRet ret, Bitmap bitmap,  Bitmap bitCrop_eye, Bitmap bitCrop_L, Bitmap bitCrop_R ) {
+    public CheckQuality(VisionDetRet ret, Bitmap bitmap,  Bitmap bitCrop_eye, Bitmap bitCrop_L, Bitmap bitCrop_R, Context context ) {
         super();
 
         this.mRet = ret;
@@ -64,6 +75,14 @@ public class CheckQuality {
         this.mbitCrop_eye = bitCrop_eye;
         this.mbitCrop_L = bitCrop_L;
         this.mbitCrop_R = bitCrop_R;
+
+        mContext = context ;
+        STATE_TEXT_CHECK_NEARNESS = mContext.getString(R.string.state_test_check_nearness);
+        STATE_TEXT_CHECK_FARNESS = mContext.getString(R.string.state_test_check_farness);
+        STATE_TEXT_CHECK_BLURRY = mContext.getString(R.string.state_test_check_blurry);
+        STATE_TEXT_CHECK_EAR = mContext.getString(R.string.state_test_check_ear);
+        STATE_TEXT_CHECK_GLANCE = mContext.getString(R.string.state_test_check_glance);
+        STATE_TEXT_CHECK_TILT = mContext.getString(R.string.state_test_check_tilt);
 
     }
 
@@ -109,18 +128,18 @@ public class CheckQuality {
                                 this.Scope = true;
                             }
                             else {
-                                string = "Please, Move backward";
+                                string = STATE_TEXT_CHECK_NEARNESS;;
                                 Log.i(TAG, "Left size(" + String.valueOf(width_L) + ", " + String.valueOf(height_L) + ")" + " / Right size(" + String.valueOf(width_R) + ", " + String.valueOf(height_R) + ")");
                             }
 
                         }
                         else{
-                            string = "Please, Come closer";
+                            string = STATE_TEXT_CHECK_FARNESS;;
                             Log.i(TAG, "Left size(" + String.valueOf(width_L) + ", " + String.valueOf(height_L) + ")" + " / Right size(" + String.valueOf(width_R) + ", " + String.valueOf(height_R) + ")");
                         }
                     }
                     else{
-                        string = "Please, Move backward";
+                        string = STATE_TEXT_CHECK_NEARNESS;;
                         Log.i(TAG, "Left size(" + String.valueOf(width_L) + ", " + String.valueOf(height_L) + ")" + " / Right size(" + String.valueOf(width_R) + ", " + String.valueOf(height_R) + ")");
                     }
 
@@ -156,7 +175,7 @@ public class CheckQuality {
             this.blur = true;
         }
         else{
-            string = "Please, Do not move your face";
+            string = STATE_TEXT_CHECK_BLURRY;;
             Log.i(TAG, "Blur Left:" + String.valueOf(this.mBlur_L) + " / Blur Right:" + String.valueOf(this.mBlur_R));
         }
 
@@ -183,7 +202,7 @@ public class CheckQuality {
             this.ear = true;
         }
         else{
-            string = "Please, Open your eyes wide";
+            string = STATE_TEXT_CHECK_EAR;;
             Log.i(TAG,String.format("EAR: left(%f) /  right(%f)", myEar.getLeft_ear(), myEar.getRight_ear()));
         }
         return string;
@@ -202,12 +221,12 @@ public class CheckQuality {
         //Log.i(TAG, String.format("Difference of side of face : %d)", diff));
 
 
-        if(diff < THRESHOLD_OF_SIDE_GLACE){
+        if(diff < THRESHOLD_OF_SIDE_GLANCE){
             this.glace = true;
         }
         else{
 
-            string = "Please, Do not turn your face and Look Forward";
+            string = STATE_TEXT_CHECK_GLANCE;;
             Log.i(TAG, String.format("Difference of side of face : %d)", diff));
         }
         return string;
@@ -230,7 +249,7 @@ public class CheckQuality {
             this.rotate = true;
         }
         else{
-            string = "Please, Do not tilt your head";
+            string = STATE_TEXT_CHECK_TILT;;
             Log.i(TAG, String.format("Rotation of face : %d)", rotat));
         }
         return string;

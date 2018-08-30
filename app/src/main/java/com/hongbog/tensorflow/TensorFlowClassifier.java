@@ -170,7 +170,7 @@ public class TensorFlowClassifier {
 
 
     /**
-     * 오른쪽/왼쪽 눈에 대한 verification 을 수행하는 함수
+     * 오른쪽/왼쪽 눈에 대한 match_ko_btn 을 수행하는 함수
      * @param lowRightData
      * @param midRightData
      * @param highRightData
