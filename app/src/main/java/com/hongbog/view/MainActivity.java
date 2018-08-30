@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent();
 
         switch (selectedId){
-            case R.id.develop_mode :
+            /*case R.id.develop_mode :
                 intent.setClass(this, CameraActivity.class);
                 intent.putExtra(ACTIVITY_FLOW_EXTRA, DEVELOP_MODE_EXTRA);
                 startActivity(intent);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, SettingActivity.class);
 //                intent.putExtra(ACTIVITY_FLOW_EXTRA, DEVELOP_MODE_EXTRA);
                 startActivity(intent);
-                break;
+                break;*/
         }
         return super.onOptionsItemSelected(item);
     }

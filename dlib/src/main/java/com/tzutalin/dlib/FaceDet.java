@@ -36,7 +36,7 @@ public class FaceDet {
         }
     }
 
-    private static FaceDet instance;
+    /*private static FaceDet instance;
 
     private FaceDet() {}
 
@@ -52,17 +52,17 @@ public class FaceDet {
             this.mLandMarkPath = mLandMarkPath;
             jniInit(mLandMarkPath);
         }
-    }
+    }*/
 
     @SuppressWarnings("unused")
-   /* public FaceDet() {
+    public FaceDet() {
         jniInit(mLandMarkPath);
     }
 
     public FaceDet(String landMarkPath) {
         mLandMarkPath = landMarkPath;
         jniInit(mLandMarkPath);
-    }*/
+    }
 
     @Nullable
     @WorkerThread

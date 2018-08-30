@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -178,6 +180,38 @@ public class ResultActivity extends AppCompatActivity {
         return parcelBitmapBundle;
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_list, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int selectedId = item.getItemId();
+        Dlog.d("onOptionsItemSelected");
+        Intent intent = new Intent();
+
+        switch (selectedId){
+            /*case R.id.develop_mode :
+                intent.setClass(this, CameraActivity.class);
+                intent.putExtra(ACTIVITY_FLOW_EXTRA, DEVELOP_MODE_EXTRA);
+                startActivity(intent);
+                break;
+            case R.id.delete_enrolled_data:
+                PreferenceUtil.getInstance(this).clear();
+                Snackbar.make(verifyBtn, DELETE_ENROLLED_DATA_TEXT, Snackbar.LENGTH_SHORT).show();
+                break;
+            case R.id.setting_mode:
+                intent.setClass(this, SettingActivity.class);
+//                intent.putExtra(ACTIVITY_FLOW_EXTRA, DEVELOP_MODE_EXTRA);
+                startActivity(intent);
+                break;*/
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
     private void initView(){

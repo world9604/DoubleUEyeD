@@ -28,6 +28,7 @@ import com.hongbog.dto.SensorDTO;
 import com.hongbog.image.quality.CheckQuality;
 import com.hongbog.util.Dlog;
 import com.hongbog.util.HttpConnection;
+import com.tzutalin.dlib.Constants;
 import com.tzutalin.dlibtest.ImageUtils;
 import com.tzutalin.dlib.FaceDet;
 import com.tzutalin.dlib.VisionDetRet;
@@ -120,9 +121,10 @@ public class OnGetImageListener implements OnImageAvailableListener {
         bitmap_left = bitmapLeft;
         bitmap_right = bitmapRight;
 
-        mFaceDet = FaceDet.getInstance();
-//        mFaceDet = new FaceDet(Constants.getFaceShapeModelPath());
-        Dlog.d("mFaceDet : " + (null == mFaceDet));
+        /*mFaceDet = FaceDet.getInstance();
+        mFaceDet.setmLandMarkPath(Constants.getFaceShapeModelPath());*/
+        mFaceDet = new FaceDet(Constants.getFaceShapeModelPath());
+        Dlog.d("mFaceDet is Null : " + (null == mFaceDet));
 
         STATE_TEXT_CHECK_OVERLAY = mContext.getString(R.string.state_text_check_overlay);
         STATE_TEXT_CHECK_ACEL = mContext.getString(R.string.state_text_check_acel);
@@ -162,12 +164,12 @@ public class OnGetImageListener implements OnImageAvailableListener {
 
     public void deInitialize() {
         Dlog.d("deInitialize");
-        /*synchronized (OnGetImageListener.this) {
+        synchronized (OnGetImageListener.this) {
             if (mFaceDet != null) {
                 Dlog.d("mFaceDet.release()");
                 mFaceDet.release();
             }
-        }*/
+        }
     }
 
 
@@ -300,6 +302,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
             synchronized (OnGetImageListener.this) {
                 results = mFaceDet.detect(mBitmap);
                 if (results == null) {
+                    Dlog.d("result is Null");
                     mIsComputing = false;
                     return;
                 }

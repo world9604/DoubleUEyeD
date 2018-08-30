@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Double UEyeD</string>
+    <!--<string name="app_name">Double UEyeD</string>
     <string name="textview_label">이름을 입력해주세요</string>
     <string name="button">확인</string>
     <string name="left_guide_eye">왼쪽 가이드 눈</string>
     <string name="right_guide_eye">오른쪽 가이드 눈</string>
-    <string name="unstable_state_text">가운데 초록색 눈 이미지에 눈을 맞추어 주세요</string>
+    <string name="unstable_state_text">원에 눈을 맞추어 주세요</string>
     <string name="steady_state_text">눈 위치를 유지해주세요</string>
     <string name="develop_mode">개발자 모드</string>
     <string name="setting_mode">설정</string>
@@ -12,8 +12,8 @@
     <string name="enroll">등록</string>
     <string name="label_result">label</string>
     <string name="result_text">반갑습니다</string>
-    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
-    <string name="state_text_check_overlay">가운데 초록색 눈 이미지에 눈을 맞추어 주세요</string>
+    <string name="camera_error">이 기기는 Camera2 API를 지원하지 않습니다.</string>
+    <string name="state_text_check_overlay">원에 눈을 맞추어 주세요</string>
     <string name="state_text_check_acel">공을 가운데에 맞추어 주세요</string>
     <string name="state_text_nothing">촬영한 데이터 수 : </string>
     <string name="verification_size_text">인식 촬영 데이터 수 : </string>
@@ -23,15 +23,56 @@
     <string name="sir">님</string>
     <string name="verification_success">환영합니다!</string>
     <string name="verification_fail">인식에 실패 하였습니다!</string>
-    <string name="ball_background_image_des">ball_background</string>
-    <string name="ball_background_grid_image_des">ball_background_grid</string>
+    <string name="ball_background_image_des">공_백그라운드_이미지</string>
+    <string name="ball_background_grid_image_des">공_백그라운드_그리드_이미지</string>
     <string name="not_enrolled_user">등록된 유저가 없습니다</string>
     <string name="delete_enrolled_data">등록 데이터 삭제</string>
     <string name="success_enroll">등록 성공</string>
+    <string name="state_test_check_nearness">뒤쪽으로 이동해 주세요.</string>
+    <string name="state_test_check_farness">가까이 와주세요.</string>
+    <string name="state_test_check_blurry">얼굴을 움직이지 마세요.</string>
+    <string name="state_test_check_ear">눈을 크게 떠 주세요.</string>
+    <string name="state_test_check_glance">얼굴을 돌리지 마시고 정면을 응시해 주세요.</string>
+    <string name="state_test_check_tilt">얼굴을 기울이지 마세요.</string>-->
+
+
+
+
+
+    <string name="app_name">Double UEyeD</string>
+    <string name="textview_label">Input Your name, please</string>
+    <string name="button">Confirm</string>
+    <string name="left_guide_eye">Left guide eye</string>
+    <string name="right_guide_eye">Right guide eye</string>
+    <string name="unstable_state_text">Please match your eyes to the circle.</string>
+    <string name="steady_state_text">Keep your eye position.</string>
+    <string name="develop_mode">Developer mode</string>
+    <string name="setting_mode">Setting</string>
+    <string name="verification">Match</string>
+    <string name="enroll">Enroll</string>
+    <string name="label_result">label</string>
+    <string name="result_text">Wellcome!</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="state_text_check_overlay">Please match your eyes to the circle.</string>
+    <string name="state_text_check_acel">Please center the ball.</string>
+    <string name="state_text_nothing">Number of data: </string>
+    <string name="verification_size_text">Number of recognized shooting data: </string>
+    <string name="enroll_size_text">Number of registered shooting data: </string>
+    <string name="setting_btn">Setting</string>
+    <string name="not_number_format">It is not a number format.</string>
+    <string name="sir">sir</string>
+    <string name="verification_success">Welcome!</string>
+    <string name="verification_fail">Recognition failed!</string>
+    <string name="ball_background_image_des">ball_background</string>
+    <string name="ball_background_grid_image_des">ball_background_grid</string>
+    <string name="not_enrolled_user">There are no registered users</string>
+    <string name="delete_enrolled_data">Delete registration data</string>
+    <string name="success_enroll">Successful registration</string>
     <string name="state_test_check_nearness">Please, Move backward</string>
     <string name="state_test_check_farness">Please, Come closer</string>
     <string name="state_test_check_blurry">Please, Do not move your face</string>
     <string name="state_test_check_ear">Please, Open your eyes wide</string>
     <string name="state_test_check_glance">Please, Do not turn your face and Look Forward</string>
     <string name="state_test_check_tilt">Please, Do not tilt your head</string>
+
 </resources>

@@ -6,7 +6,7 @@
         android:icon="@drawable/hongbog_logo_white"
         android:title="logo"
         app:showAsAction="always"/>
-    <item
+    <!--<item
         android:id="@+id/setting_mode"
         android:title="@string/setting_mode"
         android:orderInCategory="100"/>
@@ -17,6 +17,6 @@
     <item
         android:id="@+id/delete_enrolled_data"
         android:title="@string/delete_enrolled_data"
-        android:orderInCategory="10"/>
+        android:orderInCategory="10"/>-->
 
 </menu>
