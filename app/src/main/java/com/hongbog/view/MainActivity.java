@@ -20,6 +20,7 @@ import com.tzutalin.quality.R;
 
 import static com.hongbog.util.LabelSharedPreference.PreferenceConstant.PREF_KEY;
 import static com.hongbog.view.CameraActivity.SUCCESS_ENROLL;
+import static com.hongbog.view.ResultActivity.LABEL;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -103,14 +104,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         Dlog.d("requestCode : " + requestCode);
         Dlog.d("resultCode : " + resultCode);
 
         if(requestCode == REQUEST_CODE){
             if(resultCode == SUCCESS_ENROLL){
-                Snackbar.make(verifyBtn, SUCCESS_ENROLL_TEXT, Snackbar.LENGTH_SHORT).show();
+                String label = intent.getStringExtra(LABEL);
+                Snackbar.make(verifyBtn, SUCCESS_ENROLL_TEXT
+                        + "(" + label + ")", Snackbar.LENGTH_SHORT).show();
             }
         }
     }

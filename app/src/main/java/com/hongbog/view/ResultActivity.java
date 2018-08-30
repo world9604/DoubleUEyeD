@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,11 @@ import com.hongbog.dto.ResultProbList;
 import com.hongbog.tensorflow.TensorFlowClassifier;
 import com.victor.loading.rotate.RotateLoading;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import static com.hongbog.tensorflow.TensorFlowClassifier.HEIGHTS;
 import static com.hongbog.tensorflow.TensorFlowClassifier.WIDTHS;
@@ -42,6 +48,9 @@ public class ResultActivity extends AppCompatActivity {
     private String SUCCESS_TEXT;
     private String FAIL_TEXT;
     private ActionBar actionBar;
+    public static final String LABEL = "label";
+    private List<String> labelList = Arrays.asList("조원태", "김태인",
+            "길용현", "이재선", "이다희", "남궁희주", "박홍화", "이재원", "남궁종");;
 
 
     @Override
@@ -144,6 +153,7 @@ public class ResultActivity extends AppCompatActivity {
 
                     Dlog.d("ENROLL_EXTRA label : " + label);
                     PreferenceUtil.getInstance(mContext).putIntExtra(label);
+                    getIntent().putExtra(LABEL, labelList.get(label));
                     finish();
                     return;
                 }
