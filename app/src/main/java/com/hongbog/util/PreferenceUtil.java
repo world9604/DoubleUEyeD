@@ -2,10 +2,7 @@ package com.hongbog.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import static com.hongbog.util.PreferenceUtil.PreferenceConstant.DEF_INT_VALUE;
-import static com.hongbog.util.PreferenceUtil.PreferenceConstant.PREF_KEY;
-import static com.hongbog.util.PreferenceUtil.PreferenceConstant.PREF_NAME;
+import static com.hongbog.util.PreferenceUtil.PreferenceConstant.LabelPref;
 
 /**
  * Created by taein on 2018-08-29.
@@ -17,11 +14,19 @@ public class PreferenceUtil {
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
 
-    public interface PreferenceConstant{
+    /*public interface PreferenceConstant{
         String PREF_NAME = "LABEL_PREF";
         String PREF_KEY = "enrolledLabel";
         int DEF_INT_VALUE = -999;
         int GARBAGE_VALUE = -1;
+    }*/
+
+    public enum PreferenceConstant{
+        LabelPref;
+        private String PREF_NAME = "LABEL_PREF";
+        private String PREF_KEY = "enrolledLabel";
+        private int DEF_INT_VALUE = -999;
+        public int GARBAGE_VALUE = -1;
     }
 
     private PreferenceUtil(){}
@@ -34,7 +39,7 @@ public class PreferenceUtil {
         }
 
         if(prefs==null){
-            prefs = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            prefs = mContext.getSharedPreferences(LabelPref.PREF_NAME, Context.MODE_PRIVATE);
             editor = prefs.edit();
         }
 
@@ -42,7 +47,7 @@ public class PreferenceUtil {
     }
 
     public void putIntExtra(int value){
-        editor.putInt(PREF_KEY, value);
+        editor.putInt(LabelPref.PREF_KEY, value);
         editor.apply();
     }
 
@@ -71,7 +76,7 @@ public class PreferenceUtil {
     }
 
     public int getIntExtra(){
-        return prefs.getInt(PREF_KEY, DEF_INT_VALUE);
+        return prefs.getInt(LabelPref.PREF_KEY, LabelPref.DEF_INT_VALUE);
     }
 
     public String getStringExtra(String key) {
@@ -97,7 +102,7 @@ public class PreferenceUtil {
     }
 
     public boolean contains(){
-        return prefs.contains(PREF_KEY);
+        return prefs.contains(LabelPref.PREF_KEY);
     }
 
     public void clear(){

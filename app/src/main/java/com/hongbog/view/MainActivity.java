@@ -11,30 +11,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
 import com.hongbog.util.Dlog;
-import com.hongbog.util.LabelSharedPreference;
 import com.hongbog.util.PreferenceUtil;
 import com.tzutalin.quality.R;
-
-import static com.hongbog.util.LabelSharedPreference.PreferenceConstant.PREF_KEY;
-import static com.hongbog.view.CameraActivity.SUCCESS_ENROLL;
 import static com.hongbog.view.ResultActivity.LABEL;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    public static final String ACTIVITY_FLOW_EXTRA = "ACTIVITY_FLOW_EXTRA";
-    public static final String VERIFY_EXTRA = "VERIFY_EXTRA";
-    public static final String ENROLL_EXTRA = "ENROLL_EXTRA";
-    public static final String DEVELOP_MODE_EXTRA = "DEVELOP_MODE_EXTRA";
-    private static final int REQUEST_CODE = 2;
     private String NOT_ENROLLED_USER_TEXT;
     private String DELETE_ENROLLED_DATA_TEXT;
     private String SUCCESS_ENROLL_TEXT;
     private ImageButton verifyBtn;
     private ImageButton enrollBtn;
 
+    interface ActivityConst{
+        String ACTIVITY_FLOW_EXTRA = "ACTIVITY_FLOW_EXTRA";
+        String VERIFY_EXTRA = "VERIFY_EXTRA";
+        String ENROLL_EXTRA = "ENROLL_EXTRA";
+        String DEVELOP_MODE_EXTRA = "DEVELOP_MODE_EXTRA";
+        int OVERLAY_PERMISSION_REQ_CODE = 1;
+        int REQUEST_CODE = 2;
+        int SUCCESS_ENROLL_RESULT_CODE = 99;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Dlog.d("verify_btn");
 
                 intent.setClass(this, CameraActivity.class);
-                intent.putExtra(ACTIVITY_FLOW_EXTRA, VERIFY_EXTRA);
+                intent.putExtra(ActivityConst.ACTIVITY_FLOW_EXTRA, ActivityConst.VERIFY_EXTRA);
 
                 boolean isEnroll = PreferenceUtil.getInstance(this).contains();
 
@@ -96,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.enroll_btn:
                 Dlog.d("enroll_btn");
                 intent.setClass(this, CameraActivity.class);
-                intent.putExtra(ACTIVITY_FLOW_EXTRA, ENROLL_EXTRA);
+                intent.putExtra(ActivityConst.ACTIVITY_FLOW_EXTRA, ActivityConst.ENROLL_EXTRA);
                 break;
         }
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(intent, ActivityConst.REQUEST_CODE);
     }
 
 
@@ -109,11 +107,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Dlog.d("requestCode : " + requestCode);
         Dlog.d("resultCode : " + resultCode);
 
-        if(requestCode == REQUEST_CODE){
-            if(resultCode == SUCCESS_ENROLL){
+        if(requestCode == ActivityConst.REQUEST_CODE){
+            if(resultCode == ActivityConst.SUCCESS_ENROLL_RESULT_CODE){
                 String label = intent.getStringExtra(LABEL);
                 Snackbar.make(verifyBtn, SUCCESS_ENROLL_TEXT
-                        + "(" + label + ")", Snackbar.LENGTH_SHORT).show();
+                        + " (" + label + ")", Snackbar.LENGTH_SHORT).show();
             }
         }
     }

@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.hongbog.view.CameraConnectionFragment.UiHandlerConst;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -237,7 +238,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
             if (mPreviewWdith != image.getWidth() || mPreviewHeight != image.getHeight()) {
 
                 // loading animation stop
-                mUiHandler.obtainMessage(CameraConnectionFragment.LOAD_VIEW_COMPLETE).sendToTarget();
+                mUiHandler.obtainMessage(UiHandlerConst.LOAD_VIEW_COMPLETE).sendToTarget();
 
                 mPreviewWdith = image.getWidth();
                 mPreviewHeight = image.getHeight();
@@ -352,7 +353,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  */
                 if (!((acelX > -2f && acelX < 2f)
                         && (acelZ > -2f && acelZ < 2f))) {
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = STATE_TEXT_CHECK_ACEL;
                     mMsg.sendToTarget();
                     break;
@@ -363,7 +364,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  */
                 if (!"".equals(quality.acceptScope())) {
                     Dlog.d("scope");
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = quality.acceptScope();
                     mMsg.sendToTarget();
                     break;
@@ -374,7 +375,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  */
                 else if (!"".equals(quality.acceptBlur())) {
                     Dlog.d("blur");
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = quality.acceptBlur();
                     mMsg.sendToTarget();
                     break;
@@ -385,7 +386,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  */
                 else if (!"".equals(quality.acceptEar())) {
                     Dlog.d("ear");
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = quality.acceptEar();
                     mMsg.sendToTarget();
                     break;
@@ -396,7 +397,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  */
                 else if (!"".equals(quality.acceptGlace())) {
                     Dlog.d("glace");
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = quality.acceptGlace();
                     mMsg.sendToTarget();
                     break;
@@ -407,7 +408,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  */
                 else if (!"".equals(quality.acceptTilt())) {
                     Dlog.d("Tilt");
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = quality.acceptTilt();
                     mMsg.sendToTarget();
                     break;
@@ -417,7 +418,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                  * 모든 조건을 만족 할때
                  */
                 else {
-                    mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.QUALITY_CHECK);
+                    mMsg = mUiHandler.obtainMessage(UiHandlerConst.QUALITY_CHECK);
                     mMsg.obj = STATE_TEXT_NOTHING + " " + mNumCrop;
                     mMsg.sendToTarget();
                 }
@@ -486,7 +487,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
                         bitmapPathArrayBundle.putStringArray("bitmap_left", bitmapLeftPath);
                         bitmapPathArrayBundle.putStringArray("bitmap_right", bitmapRightPath);
 
-                        mMsg = mUiHandler.obtainMessage(CameraConnectionFragment.FULL_CAPTURE_COMPLETE);
+                        mMsg = mUiHandler.obtainMessage(UiHandlerConst.FULL_CAPTURE_COMPLETE);
                         mMsg.setData(bitmapPathArrayBundle);
                         mMsg.sendToTarget();
 

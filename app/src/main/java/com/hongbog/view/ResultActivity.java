@@ -31,12 +31,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import com.hongbog.view.MainActivity.ActivityConst;
 
 import static com.hongbog.tensorflow.TensorFlowClassifier.HEIGHTS;
 import static com.hongbog.tensorflow.TensorFlowClassifier.WIDTHS;
-import static com.hongbog.view.MainActivity.ACTIVITY_FLOW_EXTRA;
-import static com.hongbog.view.MainActivity.ENROLL_EXTRA;
-import static com.hongbog.view.MainActivity.VERIFY_EXTRA;
+import static com.hongbog.util.PreferenceUtil.PreferenceConstant.LabelPref;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -50,7 +49,7 @@ public class ResultActivity extends AppCompatActivity {
     private ActionBar actionBar;
     public static final String LABEL = "label";
     private List<String> labelList = Arrays.asList("조원태", "김태인",
-            "길용현", "이재선", "이다희", "남궁희주", "박홍화", "이재원", "남궁종");;
+            "길용현", "이재선", "이다희", "남궁희주", "박홍화", "이재원", "남궁종");
 
 
     @Override
@@ -85,7 +84,6 @@ public class ResultActivity extends AppCompatActivity {
 
 
     public void startLoadingAnimation() {
-
         Dlog.d("startLoadingAnimation");
         actionBar.hide();
         rotateLoading.start();
@@ -94,7 +92,6 @@ public class ResultActivity extends AppCompatActivity {
 
 
     public void stopLoadingAnimation() {
-
         Dlog.d("stopLoadingAnimation");
         actionBar.show();
         loadingLayout.setVisibility(View.GONE);
@@ -133,11 +130,11 @@ public class ResultActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer label) {
 
-            String mode = getIntent().getStringExtra(ACTIVITY_FLOW_EXTRA);
+            String mode = getIntent().getStringExtra(ActivityConst.ACTIVITY_FLOW_EXTRA);
 
             if (mode != null && !"".equals(mode)) {
 
-                if(VERIFY_EXTRA.equals(mode)){
+                if(ActivityConst.VERIFY_EXTRA.equals(mode)){
 
                     int enrolledLabel = PreferenceUtil.getInstance(mContext).getIntExtra();
                     Dlog.d("VERIFY_EXTRA enrolledLabel : " +  enrolledLabel);
@@ -149,9 +146,11 @@ public class ResultActivity extends AppCompatActivity {
                         setIdentifyFail();
                     }
 
-                }else if(ENROLL_EXTRA.equals(mode)){
+                }else if(ActivityConst.ENROLL_EXTRA.equals(mode)){
 
                     Dlog.d("ENROLL_EXTRA label : " + label);
+                    Dlog.d("ENROLL_EXTRA label : " + labelList.get(label));
+
                     PreferenceUtil.getInstance(mContext).putIntExtra(label);
                     getIntent().putExtra(LABEL, labelList.get(label));
                     finish();
@@ -237,7 +236,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private int getLabelFromLogit(ResultProbList resultProbList){
 
-        if(resultProbList == null) return PreferenceUtil.PreferenceConstant.GARBAGE_VALUE;
+        if(resultProbList == null) return LabelPref.GARBAGE_VALUE;
 
         for (ResultProb resultProb : resultProbList) {
 
@@ -247,13 +246,13 @@ public class ResultActivity extends AppCompatActivity {
             Bitmap tmpLeftBitmap = Bitmap.createScaledBitmap(leftBitmap, WIDTHS[0], HEIGHTS[0], false);
             Bitmap tmpRightBitmap = Bitmap.createScaledBitmap(rightBitmap, WIDTHS[0], HEIGHTS[0], false);
 
-            if(tmpLeftBitmap == null || tmpRightBitmap == null) return PreferenceUtil.PreferenceConstant.GARBAGE_VALUE;
+            if(tmpLeftBitmap == null || tmpRightBitmap == null) return LabelPref.GARBAGE_VALUE;
 
             float[] tempResult = resultProb.getProbResult();
 
             // 확률이 가장 큰 클래스 고르기
-            float maxValue = PreferenceUtil.PreferenceConstant.GARBAGE_VALUE;
-            int result = PreferenceUtil.PreferenceConstant.GARBAGE_VALUE;
+            float maxValue = LabelPref.GARBAGE_VALUE;
+            int result = LabelPref.GARBAGE_VALUE;
 
             for (int i = 0; i < tempResult.length; i++) {
                 if (maxValue < tempResult[i]) {
@@ -264,6 +263,6 @@ public class ResultActivity extends AppCompatActivity {
             return result;
         }
 
-        return PreferenceUtil.PreferenceConstant.GARBAGE_VALUE;
+        return LabelPref.GARBAGE_VALUE;
     }
 }

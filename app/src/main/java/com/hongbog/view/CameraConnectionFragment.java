@@ -83,7 +83,6 @@ import hugo.weaving.DebugLog;
 
 public class CameraConnectionFragment extends Fragment {
 
-    //private static final String TAG = "CameraFragment";
     private static final String TAG = "i99";
 
     //카메라 미리보기 크기가 DESIRED_SIZE x DESIRED_SIZE 사각형을 포함 할 수있는 픽셀 크기로 가장 작은 프레임으로 선택됨
@@ -136,10 +135,16 @@ public class CameraConnectionFragment extends Fragment {
     //member label name
     private String mLabel;
 
-    public static final int FULL_CAPTURE_COMPLETE = 3;
+    interface UiHandlerConst{
+        int FULL_CAPTURE_COMPLETE = 3;
+        int LOAD_VIEW_COMPLETE = 4;
+        int QUALITY_CHECK = 5;
+        int STOP_ACTIVITY = 6;
+    }
+    /*public static final int FULL_CAPTURE_COMPLETE = 3;
     public static final int LOAD_VIEW_COMPLETE = 4;
     public static final int QUALITY_CHECK = 5;
-    public static final int STOP_ACTIVITY = 6;
+    public static final int STOP_ACTIVITY = 6;*/
 
     private CustomView eyeOverlayView;
     private FrameLayout eyeOverlaySurfaceView;
@@ -731,7 +736,7 @@ public class CameraConnectionFragment extends Fragment {
             super.handleMessage(msg);
 
             switch (msg.what){
-                case FULL_CAPTURE_COMPLETE:
+                case UiHandlerConst.FULL_CAPTURE_COMPLETE:
                     Dlog.d("FULL_CAPTURE_COMPLETE");
                     final Bundle bitmapPathsBundle = msg.getData();
 
@@ -743,15 +748,15 @@ public class CameraConnectionFragment extends Fragment {
                     CameraActivity activity = ((CameraActivity)getActivity());
                     activity.goActivityWithBitmapPathBundle(bitmapPathsBundle);
                     break;
-                case STOP_ACTIVITY:
+                case UiHandlerConst.STOP_ACTIVITY:
                     Dlog.d("STOP_ACTIVITY");
                     ((CameraActivity)getActivity()).finish();
                     break;
-                case LOAD_VIEW_COMPLETE:
+                case UiHandlerConst.LOAD_VIEW_COMPLETE:
                     Dlog.d("LOAD_VIEW_COMPLETE");
                     ((CameraActivity)getActivity()).stopLoadingAnimation();
                     break;
-                case QUALITY_CHECK:
+                case UiHandlerConst.QUALITY_CHECK:
                     final String message = String.valueOf(msg.obj);
                     Dlog.d("QUALITY_CHECK : " + message);
                     mStateTextView.setText(message);

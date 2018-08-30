@@ -33,21 +33,16 @@ import com.hongbog.util.Dlog;
 import com.hongbog.dto.ParcelBitmap;
 import com.tzutalin.quality.R;
 import com.victor.loading.rotate.RotateLoading;
+import com.hongbog.view.MainActivity.ActivityConst;
 
 import java.util.ArrayList;
 
-import static com.hongbog.view.MainActivity.ACTIVITY_FLOW_EXTRA;
-import static com.hongbog.view.MainActivity.DEVELOP_MODE_EXTRA;
-import static com.hongbog.view.MainActivity.ENROLL_EXTRA;
-import static com.hongbog.view.MainActivity.VERIFY_EXTRA;
 
 /**
  * Created by darrenl on 2016/5/20.
  */
 public class CameraActivity extends Activity {
 
-    public static final int SUCCESS_ENROLL = 99;
-    private static int OVERLAY_PERMISSION_REQ_CODE = 1;
     private long startTime;
     private RelativeLayout loadingLayout;
     private RotateLoading rotateLoading;
@@ -64,7 +59,7 @@ public class CameraActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this.getApplicationContext())) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                startActivityForResult(intent, ActivityConst.OVERLAY_PERMISSION_REQ_CODE);
             }
         }
 
@@ -96,7 +91,7 @@ public class CameraActivity extends Activity {
 
         // 리스트에 이미지 넣기
         Intent intent = getIntent();
-        String mode = intent.getStringExtra(ACTIVITY_FLOW_EXTRA);
+        String mode = intent.getStringExtra(ActivityConst.ACTIVITY_FLOW_EXTRA);
 
         if(mode == null) {
             Dlog.e("intent.getStringExtra(ACTIVITY_FLOW_EXTRA) is Null");
@@ -104,16 +99,16 @@ public class CameraActivity extends Activity {
             return;
         }
 
-        if (DEVELOP_MODE_EXTRA.equals(mode)) {
+        if (ActivityConst.DEVELOP_MODE_EXTRA.equals(mode)) {
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultTestActivity.class);
-        }else if(VERIFY_EXTRA.equals(mode)){
+        }else if(ActivityConst.VERIFY_EXTRA.equals(mode)){
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultActivity.class);
-        }else if(ENROLL_EXTRA.equals(mode)){
+        }else if(ActivityConst.ENROLL_EXTRA.equals(mode)){
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultActivity.class);
-            setResult(SUCCESS_ENROLL, intent);
+            setResult(ActivityConst.SUCCESS_ENROLL_RESULT_CODE, intent);
         }else{
             return;
         }
@@ -161,7 +156,8 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+
+        if (requestCode == ActivityConst.OVERLAY_PERMISSION_REQ_CODE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this.getApplicationContext())) {
                     Dlog.d("CameraActivity onActivityResult");
