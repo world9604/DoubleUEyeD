@@ -37,6 +37,8 @@ import com.hongbog.view.MainActivity.ActivityConst;
 
 import java.util.ArrayList;
 
+import static android.content.Intent.FLAG_ACTIVITY_FORWARD_RESULT;
+
 
 /**
  * Created by darrenl on 2016/5/20.
@@ -108,7 +110,7 @@ public class CameraActivity extends Activity {
         }else if(ActivityConst.ENROLL_EXTRA.equals(mode)){
             Dlog.d("CameraActivity ACTIVITY_FLOW_EXTRA : " + mode);
             intent.setClass(this, ResultActivity.class);
-            setResult(ActivityConst.SUCCESS_ENROLL_RESULT_CODE, intent);
+            intent.setFlags(FLAG_ACTIVITY_FORWARD_RESULT);
         }else{
             return;
         }

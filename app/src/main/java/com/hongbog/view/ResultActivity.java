@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,9 +34,12 @@ import java.util.List;
 import java.util.ListIterator;
 import com.hongbog.view.MainActivity.ActivityConst;
 
+import static android.content.Intent.FLAG_ACTIVITY_FORWARD_RESULT;
 import static com.hongbog.tensorflow.TensorFlowClassifier.HEIGHTS;
 import static com.hongbog.tensorflow.TensorFlowClassifier.WIDTHS;
 import static com.hongbog.util.PreferenceUtil.PreferenceConstant.LabelPref;
+import static com.hongbog.view.MainActivity.ActivityConst.REQUEST_CODE;
+import static com.hongbog.view.MainActivity.ActivityConst.SUCCESS_ENROLL_RESULT_CODE;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -152,7 +156,8 @@ public class ResultActivity extends AppCompatActivity {
                     Dlog.d("ENROLL_EXTRA label : " + labelList.get(label));
 
                     PreferenceUtil.getInstance(mContext).putIntExtra(label);
-                    getIntent().putExtra(LABEL, labelList.get(label));
+                    Intent intent = getIntent().putExtra(LABEL, labelList.get(label));
+                    setResult(SUCCESS_ENROLL_RESULT_CODE, intent);
                     finish();
                     return;
                 }

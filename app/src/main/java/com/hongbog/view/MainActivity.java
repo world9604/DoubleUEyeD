@@ -38,9 +38,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startLoadingActivity();
 
         initView();
+
+        startLoadingActivity();
+
     }
 
 
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(requestCode == ActivityConst.REQUEST_CODE){
             if(resultCode == ActivityConst.SUCCESS_ENROLL_RESULT_CODE){
+
                 String label = intent.getStringExtra(LABEL);
                 Snackbar.make(verifyBtn, SUCCESS_ENROLL_TEXT
                         + " (" + label + ")", Snackbar.LENGTH_SHORT).show();
