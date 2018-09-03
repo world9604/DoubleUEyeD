@@ -21,42 +21,27 @@ import com.tzutalin.quality.R;
 
 public class GforceFragment extends Fragment {
 
-    private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private SensorListener mSensorLis;
-    private HandlerThread sensorThread;
-    private Handler sensorHandler;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        mSensorLis = new SensorListener();
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-        sensorThread = new HandlerThread("SensorThread");
-        sensorThread.start();
-        sensorHandler = new Handler(sensorThread.getLooper());
 
-        mSensorManager.registerListener(mSensorLis, mAccelerometer, SensorManager.SENSOR_DELAY_GAME, sensorHandler);
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
 
     @Override
     public void onDestroy() {
-        mSensorManager.unregisterListener(mSensorLis, mAccelerometer);
-        sensorThread.quitSafely();
-
-        try {
-            sensorThread.join();
-            sensorThread = null;
-            sensorHandler = null;
-        } catch (InterruptedException e) {
-            Dlog.d("error : " + e.getMessage());
-        }
         super.onDestroy();
     }
 

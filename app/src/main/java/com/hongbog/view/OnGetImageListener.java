@@ -36,6 +36,7 @@ import com.tzutalin.quality.R;
 
 import junit.framework.Assert;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,6 +49,9 @@ import com.hongbog.view.CameraConnectionFragment.UiHandlerConst;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static com.hongbog.view.SensorListener.ACEL_MSG;
+import static com.hongbog.view.SensorListener.GYRO_BR_MSG;
 
 
 // preview "1) 프레임을 가져 와서",   이미지를 "2)비트 맵으로 변환"하여   dlib lib로 처리하는 클래스
@@ -103,7 +107,7 @@ public class OnGetImageListener implements OnImageAvailableListener {
 
     public OnGetImageListener() {
         mSensorChangeHandler = new SensorChangeHandler();
-        SensorListener.setHandler(mSensorChangeHandler);
+        SensorListener.setFilterHandler(mSensorChangeHandler);
     }
 
 
@@ -330,6 +334,12 @@ public class OnGetImageListener implements OnImageAvailableListener {
                 float acelX = Float.parseFloat(String.format("%.2f", mSensorDTO.getAccelX()));
                 float acelZ = Float.parseFloat(String.format("%.2f", mSensorDTO.getAccelZ()));
 
+                Dlog.d(" [roll] : " + mSensorDTO.getRoll());
+                Dlog.d(" [pitch] : " + mSensorDTO.getPitch());
+                Dlog.d(" [yaw] : " + mSensorDTO.getYaw());
+                Dlog.d(" [br] : " + mSensorDTO.getBr());
+
+
                 /**
                  *  눈 모양 오버레이 좌표값과 디텍팅 눈 좌표값을 비교하여 오버레이 안에 눈이 들어와 있는지 확인
                  */
@@ -491,43 +501,32 @@ public class OnGetImageListener implements OnImageAvailableListener {
                         mMsg.setData(bitmapPathArrayBundle);
                         mMsg.sendToTarget();
 
+                        /**
+                         * 파일서버로 이미지 보내기
+                         */
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                        Dlog.d(" [roll] : " + mSensorDTO.getRoll());
+                        Dlog.d(" [pitch] : " + mSensorDTO.getPitch());
+                        Dlog.d(" [yaw] : " + mSensorDTO.getYaw());
+                        Dlog.d(" [br] : " + mSensorDTO.getBr());
+
+                        if(mBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)){
+                            byte[] imageBytes = baos.toByteArray();
+                            sendPngAndSensorData(imageBytes, "abc", mSensorDTO);
+
+                            try {
+                                baos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         return;
+
                     }
 
                     mNumCrop = mNumCrop + 1;
-
-                    /**
-                     * 파일서버로 이미지 보내기
-                     */
-                            /*try{
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-                                StringBuilder sb = new StringBuilder();
-                                sb.setLength(0);
-
-                                sb.append(" [roll] : " + mSensorDTO.getRoll())
-                                        .append(" [pitch] : " + mSensorDTO.getPitch())
-                                        .append(" [yaw] : " + mSensorDTO.getYaw())
-                                        .append(" [br] : " + mSensorDTO.getBr());
-
-                                Dlog.d(sb.toString());
-
-                                if(mBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)){
-                                    byte[] imageBytes = baos.toByteArray();
-
-                                    //String encodedImage = Base64.encodeToString(imageBytesimageBytes, Base64.DEFAULT);
-                                    sendPngAndSensorData(imageBytes, "abc", mSensorDTO);
-
-                                    try {
-                                        baos.close();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                            }catch (IllegalArgumentException e){
-                                Dlog.d("Exception Raise : " + e.getMessage());
-                            }*/
 
                 }
             }
@@ -591,12 +590,12 @@ public class OnGetImageListener implements OnImageAvailableListener {
             super.handleMessage(msg);
 
             switch (msg.what){
-                case 1:
-                    Dlog.d("SensorChangeHandler");
+                case GYRO_BR_MSG:
+//                    Dlog.d("SensorChange Filter");
                     mSensorDTO = (SensorDTO) msg.obj;
                     break;
-                case 0:
-                    Dlog.d("SensorChange Acel");
+                case ACEL_MSG:
+//                    Dlog.d("SensorChange Acel");
                     mSensorDTO = (SensorDTO) msg.obj;
                     break;
             }

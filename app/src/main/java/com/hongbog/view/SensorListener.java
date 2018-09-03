@@ -24,12 +24,19 @@ public class SensorListener implements SensorEventListener {
     // for radian -> dgree
     private double RAD2DGR = 180 / Math.PI;
     private static final float NS2S = 1.0f/1000000000.0f;
+    public static final int GYRO_BR_MSG = 1;
+    public static final int ACEL_MSG = 0;
 
-    private static Handler mHandler;
+    private static Handler filterHandler;
+    private static Handler ballSurfaceHandler;
     private SensorDTO mSensorDto = new SensorDTO();
 
-    public static void setHandler(Handler handler) {
-        mHandler = handler;
+    public static void setFilterHandler(Handler handler) {
+        filterHandler = handler;
+    }
+
+    public static void setBallSurfaceHandler(Handler handler){
+        ballSurfaceHandler = handler;
     }
 
     @Override
@@ -39,7 +46,7 @@ public class SensorListener implements SensorEventListener {
 
             mSensorDto.setBr(String.valueOf(event.values[0]));
 
-            mHandler.obtainMessage(1, mSensorDto).sendToTarget();
+            //filterHandler.obtainMessage(GYRO_BR_MSG, mSensorDto).sendToTarget();
 
         }else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE){
 
@@ -69,14 +76,15 @@ public class SensorListener implements SensorEventListener {
             mSensorDto.setRoll(String.format("%.1f", roll*RAD2DGR));
             mSensorDto.setYaw(String.format("%.1f", yaw*RAD2DGR));
 
-            mHandler.obtainMessage(1, mSensorDto).sendToTarget();
+            filterHandler.obtainMessage(GYRO_BR_MSG, mSensorDto).sendToTarget();
 
         }else if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
 
             mSensorDto.setAccelX(event.values[0]);
             mSensorDto.setAccelZ(event.values[2]);
 
-            mHandler.obtainMessage(0, mSensorDto).sendToTarget();
+            ballSurfaceHandler.obtainMessage(ACEL_MSG, mSensorDto).sendToTarget();
+            filterHandler.obtainMessage(ACEL_MSG, mSensorDto).sendToTarget();
 
         }
     }

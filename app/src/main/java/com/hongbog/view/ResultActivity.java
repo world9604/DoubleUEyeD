@@ -52,8 +52,8 @@ public class ResultActivity extends AppCompatActivity {
     private String FAIL_TEXT;
     private ActionBar actionBar;
     public static final String LABEL = "label";
-    private List<String> labelList = Arrays.asList("조원태", "김태인",
-            "길용현", "이재선", "이다희", "남궁희주", "박홍화", "이재원", "남궁종");
+    private List<String> labelList = Arrays.asList("WonTae Cho", "TaeIn Kim",
+            "Yonghyun Kil", "JaeSeon Lee", "Dahee Lee", "Heejoo Namkoong", "Lauren Park", "JaeWon Lee", "Jong Namgoong");
 
 
     @Override

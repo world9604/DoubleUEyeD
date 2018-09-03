@@ -17,11 +17,17 @@
 package com.hongbog.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
@@ -50,6 +56,15 @@ public class CameraActivity extends Activity {
     private RotateLoading rotateLoading;
     private FrameLayout gforceFrameLayout;
 
+    //Using the Accelometer & Gyroscoper
+    private SensorManager mSensorManager;
+    private SensorEventListener mSensorLis;
+    private Sensor mGgyroSensor;
+    private Sensor mLightSensor;
+    private HandlerThread sensorThread;
+    private Handler sensorHandler;
+
+
     @Override
     protected void onCreate (final Bundle savedInstanceState) {
         Dlog.d("onCreate");
@@ -66,6 +81,12 @@ public class CameraActivity extends Activity {
         }
 
         startTime = System.currentTimeMillis();
+
+        mSensorLis = new SensorListener();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mGgyroSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        mLightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        mSensorLis = new SensorListener();
 
         if (null == savedInstanceState) {
             getFragmentManager()
@@ -129,13 +150,6 @@ public class CameraActivity extends Activity {
 
 
     @Override
-    protected void onPause() {
-        Dlog.d("onPause");
-        super.onPause();
-    }
-
-
-    @Override
     protected void onStop() {
         Dlog.d("onStop");
         super.onStop();
@@ -145,7 +159,42 @@ public class CameraActivity extends Activity {
     @Override
     protected void onResume() {
         Dlog.d("onResume");
+        registerSensorManager();
         super.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        Dlog.d("onPause");
+        unregisterSensorManager();
+        super.onPause();
+    }
+
+
+    private void registerSensorManager(){
+        sensorThread = new HandlerThread("SensorThread");
+        sensorThread.start();
+        sensorHandler = new Handler(sensorThread.getLooper());
+
+        mSensorManager.registerListener(mSensorLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI, sensorHandler);
+        mSensorManager.registerListener(mSensorLis, mLightSensor, SensorManager.SENSOR_DELAY_UI, sensorHandler);
+    }
+
+
+    private void unregisterSensorManager(){
+        sensorThread.quitSafely();
+
+        try {
+            sensorThread.join();
+            sensorThread = null;
+            sensorHandler = null;
+        } catch (InterruptedException e) {
+            Dlog.d("error : " + e.getMessage());
+        }
+
+        mSensorManager.unregisterListener(mSensorLis, mGgyroSensor);
+        mSensorManager.unregisterListener(mSensorLis, mLightSensor);
     }
 
 

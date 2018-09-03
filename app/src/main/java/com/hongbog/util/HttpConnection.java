@@ -13,6 +13,10 @@ import okhttp3.RequestBody;
  */
 public class HttpConnection {
 
+    private static final String ADDRESS = "http://192.168.0.2:8080";
+    private static final String MAPPING_NAME = "/uploadData.do";
+    private final String URL = ADDRESS + MAPPING_NAME;
+
     private OkHttpClient client;
     private static HttpConnection instance = new HttpConnection();
     public static HttpConnection getInstance() {
@@ -32,9 +36,8 @@ public class HttpConnection {
                     .addFormDataPart("br", sensorVales.getBr())
                     .build();
 
-            String url = "http://192.168.0.2:8080/uploadImage.do";
             okhttp3.Request request = new okhttp3.Request.Builder()
-                    .url(url)
+                    .url(URL)
                     .post(requestBody)
                     .build();
 
@@ -44,6 +47,7 @@ public class HttpConnection {
 
             e.printStackTrace();
         }
+
         return null;
     }
 

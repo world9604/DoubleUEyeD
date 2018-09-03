@@ -75,7 +75,6 @@ public class ImageUtils {
     public static void saveBitmap2(final Bitmap bitmap, String fileName) {
 
         final File file = new File(fileName);
-        Dlog.d("fileName : " +  fileName);
 
         if (!file.mkdirs()) {
             Timber.tag(TAG).e("Make dir failed");
@@ -200,7 +199,6 @@ public class ImageUtils {
      */
     public static Bitmap extractBitmapFromDirName(String filePath){
         try {
-            Dlog.d("filePath : " + filePath);
             FileInputStream is = new FileInputStream(filePath);
             Bitmap bmp = BitmapFactory.decodeStream(is);
             is.close();
