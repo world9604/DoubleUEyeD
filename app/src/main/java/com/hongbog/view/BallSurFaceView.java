@@ -16,6 +16,8 @@ import com.hongbog.dto.SensorDTO;
 import com.hongbog.util.Dlog;
 import com.tzutalin.quality.R;
 
+import static com.hongbog.view.SensorListener.ACEL_MSG;
+
 /**
  * Created by taein on 2018-07-12.
  */
@@ -39,7 +41,7 @@ public class BallSurFaceView extends SurfaceView implements SurfaceHolder.Callba
         setFocusable(true);
         setZOrderOnTop(true);
         mHandler = new SensorChangeHandler();
-        SensorListener.setHandler(mHandler);
+        SensorListener.setBallSurfaceHandler(mHandler);
     }
 
     @Override
@@ -135,8 +137,9 @@ public class BallSurFaceView extends SurfaceView implements SurfaceHolder.Callba
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case 0:
+                case ACEL_MSG:
                     SensorDTO sensorDTO = (SensorDTO)msg.obj;
+                    Dlog.d("sensorDTO acel : " + sensorDTO.getAccelZ());
                     if(mThread != null && mThread.isAlive()){
                         mThread.setAcel(sensorDTO.getAccelX(), sensorDTO.getAccelZ());
                     }

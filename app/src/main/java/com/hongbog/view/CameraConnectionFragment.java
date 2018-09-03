@@ -123,14 +123,6 @@ public class CameraConnectionFragment extends Fragment {
     private Handler UiHandler;
 
     private final Semaphore cameraOpenCloseLock = new Semaphore(1);
-    private HandlerThread sensorThread;
-    private Handler sensorHandler;
-
-    //Using the Accelometer & Gyroscoper
-    private SensorManager mSensorManager;
-    private SensorEventListener mSensorLis;
-    private Sensor mGgyroSensor;
-    private Sensor mLightSensor;
 
     //member label name
     private String mLabel;
@@ -215,14 +207,6 @@ public class CameraConnectionFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Dlog.d("onCreate");
         super.onCreate(savedInstanceState);
-
-        //Using the Gyroscope & Light
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        mGgyroSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        mLightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        mSensorLis = new SensorListener();
-        mSensorManager.registerListener(mSensorLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI, sensorHandler);
-        mSensorManager.registerListener(mSensorLis, mLightSensor, SensorManager.SENSOR_DELAY_UI, sensorHandler);
 
         Intent intent = getActivity().getIntent();
         String label = intent.getStringExtra(LABEL_NAME);
@@ -332,8 +316,6 @@ public class CameraConnectionFragment extends Fragment {
         Dlog.d("onPause");
         closeCamera();
         stopBackgroundThread();
-        mSensorManager.unregisterListener(mSensorLis, mGgyroSensor);
-        mSensorManager.unregisterListener(mSensorLis, mLightSensor);
         super.onPause();
     }
 
@@ -501,10 +483,6 @@ public class CameraConnectionFragment extends Fragment {
         inferenceThread.start();
         inferenceHandler = new Handler(inferenceThread.getLooper());
 
-        sensorThread = new HandlerThread("SensorThread");
-        sensorThread.start();
-        sensorHandler = new Handler(sensorThread.getLooper());
-
         UiHandler = new UIChangeHandler(Looper.getMainLooper());
     }
 
@@ -514,7 +492,6 @@ public class CameraConnectionFragment extends Fragment {
     private void stopBackgroundThread() {
         backgroundThread.quitSafely();
         inferenceThread.quitSafely();
-        sensorThread.quitSafely();
 
         try {
             backgroundThread.join();
@@ -524,10 +501,6 @@ public class CameraConnectionFragment extends Fragment {
             inferenceThread.join();
             inferenceThread = null;
             inferenceHandler = null;
-
-            sensorThread.join();
-            sensorThread = null;
-            sensorHandler = null;
 
             UiHandler = null;
         } catch (final InterruptedException e) {
