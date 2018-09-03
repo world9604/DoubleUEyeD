@@ -334,11 +334,6 @@ public class OnGetImageListener implements OnImageAvailableListener {
                 float acelX = Float.parseFloat(String.format("%.2f", mSensorDTO.getAccelX()));
                 float acelZ = Float.parseFloat(String.format("%.2f", mSensorDTO.getAccelZ()));
 
-                Dlog.d(" [roll] : " + mSensorDTO.getRoll());
-                Dlog.d(" [pitch] : " + mSensorDTO.getPitch());
-                Dlog.d(" [yaw] : " + mSensorDTO.getYaw());
-                Dlog.d(" [br] : " + mSensorDTO.getBr());
-
 
                 /**
                  *  눈 모양 오버레이 좌표값과 디텍팅 눈 좌표값을 비교하여 오버레이 안에 눈이 들어와 있는지 확인
@@ -506,6 +501,8 @@ public class OnGetImageListener implements OnImageAvailableListener {
                          */
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+                        Dlog.d(" [acelX] : " + acelX);
+                        Dlog.d(" [acelZ] : " + acelZ);
                         Dlog.d(" [roll] : " + mSensorDTO.getRoll());
                         Dlog.d(" [pitch] : " + mSensorDTO.getPitch());
                         Dlog.d(" [yaw] : " + mSensorDTO.getYaw());

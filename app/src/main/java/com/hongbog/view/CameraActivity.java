@@ -61,6 +61,7 @@ public class CameraActivity extends Activity {
     private SensorEventListener mSensorLis;
     private Sensor mGgyroSensor;
     private Sensor mLightSensor;
+    private Sensor mAccelSensor;
     private HandlerThread sensorThread;
     private Handler sensorHandler;
 
@@ -81,12 +82,7 @@ public class CameraActivity extends Activity {
         }
 
         startTime = System.currentTimeMillis();
-
-        mSensorLis = new SensorListener();
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mGgyroSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        mLightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        mSensorLis = new SensorListener();
+        initSensor();
 
         if (null == savedInstanceState) {
             getFragmentManager()
@@ -103,6 +99,14 @@ public class CameraActivity extends Activity {
         startLoadingAnimation();
     }
 
+
+    private void initSensor(){
+        mSensorLis = new SensorListener();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mGgyroSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        mLightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        mAccelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    }
 
     public void goActivityWithBitmapPathBundle(Bundle bitmapPathsBundle) {
 
@@ -142,6 +146,7 @@ public class CameraActivity extends Activity {
         finish();
     }
 
+
     @Override
     protected void onStart() {
         Dlog.d("onStart");
@@ -177,8 +182,9 @@ public class CameraActivity extends Activity {
         sensorThread.start();
         sensorHandler = new Handler(sensorThread.getLooper());
 
-        mSensorManager.registerListener(mSensorLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI, sensorHandler);
-        mSensorManager.registerListener(mSensorLis, mLightSensor, SensorManager.SENSOR_DELAY_UI, sensorHandler);
+        mSensorManager.registerListener(mSensorLis, mGgyroSensor, SensorManager.SENSOR_DELAY_GAME, sensorHandler);
+        mSensorManager.registerListener(mSensorLis, mLightSensor, SensorManager.SENSOR_DELAY_GAME, sensorHandler);
+        mSensorManager.registerListener(mSensorLis, mAccelSensor, SensorManager.SENSOR_DELAY_GAME, sensorHandler);
     }
 
 
@@ -195,6 +201,7 @@ public class CameraActivity extends Activity {
 
         mSensorManager.unregisterListener(mSensorLis, mGgyroSensor);
         mSensorManager.unregisterListener(mSensorLis, mLightSensor);
+        mSensorManager.unregisterListener(mSensorLis, mAccelSensor);
     }
 
 

@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.os.Handler;
 
 import com.hongbog.dto.SensorDTO;
+import com.hongbog.util.Dlog;
 
 /**
  * Created by taein on 2018-06-14.

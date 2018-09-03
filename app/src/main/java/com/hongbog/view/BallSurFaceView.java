@@ -139,7 +139,6 @@ public class BallSurFaceView extends SurfaceView implements SurfaceHolder.Callba
             switch (msg.what){
                 case ACEL_MSG:
                     SensorDTO sensorDTO = (SensorDTO)msg.obj;
-                    Dlog.d("sensorDTO acel : " + sensorDTO.getAccelZ());
                     if(mThread != null && mThread.isAlive()){
                         mThread.setAcel(sensorDTO.getAccelX(), sensorDTO.getAccelZ());
                     }
